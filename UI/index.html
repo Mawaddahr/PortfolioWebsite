@@ -1,14 +1,27 @@
 ﻿<!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="index.css"/>
         <title>Mawadda's portfolio website</title>
     </head>
     <body>
-        <button onclick="location.href='AboutMe.html'">About me</button>
-        <button onclick="location.href='Contact.html'">Contact</button>
-        <button onclick="location.href='Resume.html'">Resume</button>
-        <button onclick="location.href='Projects.html'">Projects</button>
-        <h1>Mawaddda's</h1>
-        <h2>Development journey website</h2>
+        <header>
+            <div class="nav-container">
+                <button class="nav-btn" onclick="location.href='AboutMe.html'">About me</button>
+                <button class="nav-btn">Contact</button>
+                <button class="nav-btn"onclick="location.href='Resume.html'">Resume</button>
+                <button class="nav-btn"onclick="location.href='Projects.html'">Projects</button>
+            </div>
+        </header>
+        <main>
+                <h1 id="website-title">Mawadda's development journey website</h1>
+        </main>
+        <footer>
+            <h2>Contact me</h2>
+            <button class="contact-btn">LinkedIn</button>
+            <button class="contact-btn">GitHub</button>
+            <button class="contact-btn">Email</button>
+            <button class="contact-btn">Phone</button>
+        </footer>
     </body>
 </html>

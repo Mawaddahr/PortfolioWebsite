@@ -1,0 +1,42 @@
+﻿
+header, body {
+    background-color: #023020;
+}
+
+main {
+    background-color: #023020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+footer {
+    background-color: #ffffff;
+    color: #023020;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#website-title {
+    color: #ffffff;
+    font-size: 90px;
+    line-height: 90px;
+    text-align: center;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
