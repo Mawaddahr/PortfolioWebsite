@@ -18,6 +18,9 @@ main {
     border: solid 5px;
     border-color: #023020;
     margin: 60px;
+}
+
+.project-container {
     display: flex;
     flex-direction: row;
     align-content: center;
@@ -52,4 +55,45 @@ main {
     color: #023020;
     font-family: Perandory;
     font-size: 90px;
+}
+
+.slide-btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+}
+
+#slide-left-btn, #slide-right-btn{
+    border-radius: 100px;
+    border-color: #023020;
+    border: solid 5px;
+    background-color: #ffffff;
+    height: 110px;
+    width: 110px;
+    cursor: pointer;
+}
+
+#slide-left-btn, #slide-right-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#left-heart, #right-heart{
+    height: 90px;
+    cursor: pointer;
+}
+
+#left-heart{
+    margin-left: 0px;
+    display: inline-block;
+    float: left;
+}
+
+
+
+.slides{
+    display:none;
 }
