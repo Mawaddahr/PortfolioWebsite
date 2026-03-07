@@ -8,6 +8,10 @@
     src: url(Sloop-ScriptThree.ttf);
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: #023020;
 }

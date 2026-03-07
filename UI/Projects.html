@@ -19,25 +19,24 @@
             <h2 class="sloop-script-h2">my</h2><h1 id="title">Projects</h1>
         </div>
         <div class="slideshow-container">
+            <button id="slide-left-btn" onclick="plusSlides(-1)"><img  id="left-heart" src="img/heart-btn-left.png"/></button>
                 <div class="slides">
-                    <img src="img/slideshow-img1.avf"/>
+                    <img class="slide-layout" src="img/slideshow-img1.avf"/>
                     <div class="project-title">project x</div>
                 </div>
 
                 <div class="slides">
-                    <img src="img/slideshow-img2.jpg"/>
-                    <div class="project-title">project x</div>
+                    <img class="slide-layout" src="img/slideshow-img2.jpg"/>
+                    <div class="project-title">project y</div>
                 </div>
 
                 <div class="slides">
-                    <img src="img/slideshow-img3.avf"/>
-                    <div class="project-title">project x</div>
+                    <img class="slide-layout" src="img/slideshow-img3.avf"/>
+                    <div class="project-title">project z</div>
                 </div>
-                <div class="slide-btn-container">
-                    <button id="slide-left-btn"><img id="left-heart" src="img/heart-btn-left.png" /></button>
-                    <button id="slide-right-btn"><img id="right-heart" src="img/heart-btn-right.png" /></button>
-                </div>
-        </div>
+                <button id="slide-right-btn" onclick="plusSlides(1)"><img id="right-heart" src="img/heart-btn-right.png" /></button>
+            </div>
     </main>
+    <script defer src="scripts/slideshow.js"></script>
 </body>
 </html>

@@ -8,6 +8,10 @@
     src: url(Sloop-ScriptThree.ttf);
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: #ffc5d9;
 }
@@ -57,14 +61,25 @@ main {
     font-size: 90px;
 }
 
+.slideshow-container {
+    max-width: 2000px;
+    position: relative;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+}
+
 .slide-btn-container {
+    position: relative;
+    margin: auto;
+    height: 200px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 200px;
 }
-
-#slide-left-btn, #slide-right-btn{
+#slide-left-btn, #slide-right-btn {
     border-radius: 100px;
     border-color: #023020;
     border: solid 5px;
@@ -72,13 +87,12 @@ main {
     height: 110px;
     width: 110px;
     cursor: pointer;
+    user-select: none;
 }
 
-#slide-left-btn, #slide-right-btn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+#slide-right-btn {
+    right: 0;
+    user-select: none;
 }
 
 #left-heart, #right-heart{
@@ -88,12 +102,20 @@ main {
 
 #left-heart{
     margin-left: 0px;
-    display: inline-block;
+    display: block;
     float: left;
 }
 
+.slides {
+    position: relative;
+    margin: auto;
+    height: 200px;
+    display: none;
+    text-align: center;
+}
 
-
-.slides{
-    display:none;
+.slide-layout {
+    max-width: 250px;
+    width: auto;
+    display: block;
 }
