@@ -1,21 +1,30 @@
-﻿@font-face {
-    font-family: 'Perandory';
-    src: url(PerandorySemiCondensed.otf);
-}
 @font-face {
-    font-family: 'Sloop';
-    src: url(Sloop-ScriptThree.ttf);
+    font-family: 'Perandory';
+    src: url(fonts/PerandorySemiCondensed.otf);
 }
 
-html{
-    scroll-behavior: smooth;
+@font-face {
+    font-family: 'Sloop';
+    src: url(fonts/Sloop-ScriptThree.ttf);
 }
 
 header, body {
     background-color: #023020;
+    justify-content: center;
 }
 
-main {
+/*main {
+    justify-content: center;
+}*/
+/*html {
+    scroll-behavior: smooth;
+}*/
+
+body {
+    background-color: #023020;
+}
+
+.homepage-main {
     background-color: #023020;
     height: 100vh;
     display: flex;
@@ -31,7 +40,6 @@ main {
     font-size: 190px;
     text-align: center;
     margin: 0;
-
     line-height: 85px;
 }
 
@@ -63,33 +71,43 @@ main {
 }
 
 section {
+    position: absolute;
+    left: 0;
     background-color: #ffffff;
     color: #023020;
-    height: 100vh;
-    margin: 0;
+    height: 150vh;
+    width: 100%;
+    margin: 10;
     padding: 0;
     border: 0;
 }
+
 footer {
+    position: fixed;
+    left: 0;
     background-color: #023020;
     color: #ffffff;
     padding: 10px;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 100px;
     margin: 0;
     padding: 0;
     border: 0;
 }
 
-.tag-row {
+.tag-row, .contact-row {
     display: flex;
     flex-direction: row;
 }
 
+.contact-row {
+    position: fixed;
+}
+
 #about {
     margin-top: 20px;
-    margin-left: 20px; 
+    margin-left: 20px;
     margin-bottom: 0;
     font-family: Perandory;
     font-size: 70px;
@@ -98,12 +116,13 @@ footer {
 
 #about2 {
     margin-top: 20px;
-    margin-left: 20px;
+/*    margin-left: 20px;*/
     margin-bottom: 0;
     font-family: Sloop;
     font-size: 70px;
     color: #ffc5d9;
 }
+
 .about-me-text {
     font-size: 20px;
     font-family: Perandory;
@@ -111,6 +130,7 @@ footer {
     width: 50%;
     margin-left: 20px;
 }
+
 #contact {
     font-family: Perandory;
     font-size: 70px;
@@ -130,10 +150,16 @@ footer {
 
 .contact-container {
     text-align: right;
+    bottom: 30px;
+    position: fixed;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 .contact-btn {
-    border: none;
+    border: 0;
     cursor: pointer;
     color: #ffffff;
     font-family: Perandory;
@@ -142,4 +168,5 @@ footer {
     background-color: transparent;
     border-right: 1px solid #ffffff;
     margin-right: 50px;
+    text-decoration: none;
 }

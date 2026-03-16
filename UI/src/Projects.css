@@ -16,11 +16,10 @@ body {
     background-color: #ffc5d9;
 }
 
-main {
+.project-main {
     background-color: #ffffff;
     height: 100vh;
-    border: solid 5px;
-    border-color: #023020;
+    border: solid #ffc5d9 5px;
     margin: 60px;
 }
 
@@ -62,60 +61,26 @@ main {
 }
 
 .slideshow-container {
-    max-width: 2000px;
-    position: relative;
-    margin: auto;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
-}
-
-.slide-btn-container {
-    position: relative;
-    margin: auto;
-    height: 200px;
-    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-#slide-left-btn, #slide-right-btn {
-    border-radius: 100px;
-    border-color: #023020;
-    border: solid 5px;
-    background-color: #ffffff;
-    height: 110px;
-    width: 110px;
-    cursor: pointer;
-    user-select: none;
-}
 
-#slide-right-btn {
-    right: 0;
-    user-select: none;
-}
-
-#left-heart, #right-heart{
-    height: 90px;
+.left-arrow, .right-arrow
+{
+    height: 300px;
     cursor: pointer;
 }
 
-#left-heart{
-    margin-left: 0px;
-    display: block;
+.left-arrow {
     float: left;
 }
-
-.slides {
-    position: relative;
-    margin: auto;
-    height: 200px;
-    display: none;
-    text-align: center;
+.right-arrow {
+    float: right;
 }
 
-.slide-layout {
-    max-width: 250px;
-    width: auto;
-    display: block;
+.slideshow-img {
+    height: 300px;
+    justify-content: center;
 }

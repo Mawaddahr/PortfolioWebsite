@@ -8,10 +8,6 @@
     src: url(Sloop-ScriptThree.ttf);
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     background-color: #023020;
 }
@@ -40,11 +36,12 @@ body {
     font-size: 70px;
 }
 
-main {
+.resume-container {
     background-color: #ffffff;
     border: solid 5px;
     border-color: #ffc5d9;
-    height: 100vh;
+    height: 1000vh;
+    width: 200vh;
     margin: 40px;
     display: flex;
     flex-direction: row;
