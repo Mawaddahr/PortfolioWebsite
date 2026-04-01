@@ -1,10 +1,10 @@
+using HotChocolate.AspNetCore;
+using PortfolioWebsite.Database;  
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddGraphQLServer();
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<IConnectionFactory>(_ => new NpgsqlConnectionFactory(builder.Configuration));
 
 var app = builder.Build();
 
@@ -14,10 +14,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
+
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<NpgsqlConnectionFactory>();
+    await context.Init();
+}
