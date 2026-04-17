@@ -1,4 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Dapper.Contrib;
+using Dapper.Contrib.Extensions;
 
 namespace PortfolioWebsite.Objects
 {
@@ -7,12 +8,13 @@ namespace PortfolioWebsite.Objects
     {
         public Project(string Name, string Description, string Link, string ImageUrl)
         {
-            Id = new Guid().ToString();
+            Id = Guid.NewGuid().ToString();
             this.Name = Name;
             this.Description = Description;
             this.Link = Link;
             this.ImageUrl = ImageUrl;
         }
+        [Key]
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

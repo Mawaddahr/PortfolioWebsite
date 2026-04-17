@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dapper.Contrib;
+using Dapper.Contrib.Extensions;
 
 namespace PortfolioWebsite.Objects
 {
     [Table("Experiences")]
     public class Experience
     {
+        public Experience() { Id = new Guid().ToString(); }
         public Experience(
             string company,
             string role,
@@ -14,7 +16,7 @@ namespace PortfolioWebsite.Objects
             string location
             )
         {
-            Id = new Guid().ToString();
+            Id = System.Guid.NewGuid().ToString();
             Company = company;
             Role = role;
             Description = description;
@@ -22,6 +24,7 @@ namespace PortfolioWebsite.Objects
             EndDate = endDate;
             Location = location;
         }
+        [Key]
         public string Id { get; set; }
         public string Company { get; set; }
         public string Role { get; set; }
@@ -30,6 +33,6 @@ namespace PortfolioWebsite.Objects
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public string Location { get; set; }
-        public string Duration { get; set; } = string.Empty;
+        public string Duration { get; set; }
     }
 }

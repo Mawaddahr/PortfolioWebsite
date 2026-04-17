@@ -1,10 +1,21 @@
+using Dapper.FluentMap;
 using HotChocolate.AspNetCore;
-using PortfolioWebsite.Database;  
+using PortfolioWebsite.Database;
+using PortfolioWebsite.Operations;
+using PortfolioWebsite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddGraphQLServer();
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<IConnectionFactory>(_ => new NpgsqlConnectionFactory(builder.Configuration));
+builder.Services.AddTransient<MawaddaDbContext>(_
+    => new MawaddaDbContext(new NpgsqlConnectionFactory(builder.Configuration)));
+builder.Services.AddKeyedScoped<ExperienceService>("experienceService");
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
+
+FluentMapper.Initialize(config =>
+config.AddMap(new ExperienceMap()));
 
 var app = builder.Build();
 
@@ -20,10 +31,10 @@ if (app.Environment.IsDevelopment())
 
 app.MapGraphQL();
 
-app.Run();
-
 {
     using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<NpgsqlConnectionFactory>();
+    var context = scope.ServiceProvider.GetRequiredService<MawaddaDbContext>();
     await context.Init();
 }
+
+app.Run();

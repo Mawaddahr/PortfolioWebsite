@@ -16,7 +16,7 @@ namespace PortfolioWebsite.Objects
             DateOnly estimatedEndDate,
             DateOnly endDate)
         {
-            Id = new Guid().ToString();
+            Id = Guid.NewGuid().ToString();
             Institution = institution;
             StudyProgram = studyProgram;
             StudyProgramType = studyProgramType;
