@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.FluentMap;
 using Dapper.FluentMap.Mapping;
 using PortfolioWebsite.Objects;
 
@@ -28,9 +27,8 @@ namespace PortfolioWebsite.Database
                 role VARCHAR(100) NOT NULL,
                 description VARCHAR(500),
                 startdate DATE NOT NULL,
-                enddate DATE,
-                duration TEXT
-            );
+                enddate DATE
+                );
             
             CREATE TABLE IF NOT EXISTS Education(
                 id TEXT PRIMARY KEY,
@@ -38,7 +36,6 @@ namespace PortfolioWebsite.Database
                 studyprogram VARCHAR(100) NOT NULL,
                 studyprogramtype VARCHAR(100) NOT NULL,
                 startdate DATE NOT NULL,
-                estimatedenddate DATE NOT NULL,
                 ongoing BOOLEAN NOT NULL,
                 enddate DATE
             );
@@ -72,4 +69,29 @@ namespace PortfolioWebsite.Database
 
     }
 
+    public class EducationMap : EntityMap<Education>
+    {
+        public EducationMap()
+        {
+            Map(e => e.Id).ToColumn("id");
+            Map(e => e.Institution).ToColumn("institution");
+            Map(e => e.StudyProgram).ToColumn("studyprogram");
+            Map(e => e.StudyProgramType).ToColumn("studyprogramtype");
+            Map(e => e.StartDate).ToColumn("startdate");
+            Map(e => e.OnGoing).ToColumn("ongoing");
+            Map(e => e.EndDate).ToColumn("enddate");
+        }
+    }
+
+    public class ProjectMap : EntityMap<Project>
+    {
+        public ProjectMap()
+        {
+            Map(p => p.Id).ToColumn("id");
+            Map(p => p.Name).ToColumn("name");
+            Map(p => p.Description).ToColumn("description");
+            Map(p => p.Link).ToColumn("link");
+            Map(p => p.ImageUrl).ToColumn("ImageUrl");
+        }
+    }
 }

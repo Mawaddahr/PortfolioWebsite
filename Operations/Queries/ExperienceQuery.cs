@@ -1,23 +1,21 @@
-﻿using PortfolioWebsite.Database;
-using PortfolioWebsite.Objects;
-using Dapper;
+﻿using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
-using Microsoft.AspNetCore.Mvc;
 
-namespace PortfolioWebsite.Operations
+namespace PortfolioWebsite.Operations.Queries
 {
-    public class Query
+    [ExtendObjectType("Query")]
+    public class ExperienceQuery
     {
         [UseResolverScope]
         public async Task<Experience> GetExperienceByIdAsync(string id, [Service("experienceService")] ExperienceService experienceService)
         {
-            Experience experience = await experienceService.GetExperienceById(id);
+            Experience experience = await experienceService.GetExperienceByIdAsync(id);
             return experience;
         }
 
         public async Task<List<Experience>> GetExperiencesAsync([Service("experienceService")] ExperienceService experienceService)
         {
-            List<Experience> experiences = await experienceService.GetExperiencesAsync();
+            List<Experience> experiences = await experienceService.GetAllExperienceAsync();
             return experiences;
         }
     }

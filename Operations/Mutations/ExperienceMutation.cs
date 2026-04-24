@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using PortfolioWebsite.Objects;
+﻿using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 using PortfolioWebsite.Objects.InputObjects;
 
-namespace PortfolioWebsite.Operations
+namespace PortfolioWebsite.Operations.Mutations
 {
-    public class Mutation
+    [ExtendObjectType("Mutation")]
+    public class ExperienceMutation
     {
         [UseResolverScope]
         public async Task<string> InsertExperienceAsync(InputExperience experience, [Service("experienceService")] ExperienceService experienceService)
         {
             try
             {
-                await experienceService.AddExperience(experience);
+                await experienceService.InsertExperienceAsync(experience);
             }
             catch (Exception e)
                 {
@@ -26,7 +25,7 @@ namespace PortfolioWebsite.Operations
         {
             try
             {
-                await experienceService.UpdateExperience(experience);
+                await experienceService.UpdateExperienceAsync(experience);
             }
             catch (Exception e)
             {
@@ -39,7 +38,7 @@ namespace PortfolioWebsite.Operations
         {
             try
             {
-                await experienceService.DeleteExperienceById(id);
+                await experienceService.DeleteExperienceByIdAsync(id);
             }
             catch (Exception e)
             {

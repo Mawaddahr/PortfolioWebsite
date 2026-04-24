@@ -4086,7 +4086,9 @@
     <PackageReference Include="Dapper.FluentMap" Version="2.0.0" />
     <PackageReference Include="Dapper.FluentMap.Dommel" Version="2.0.0" />
     <PackageReference Include="Dapper.SqlBuilder" Version="2.1.66" />
+    <PackageReference Include="DataAnnotatedModelValidations" Version="10.0.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.12" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
@@ -4097,7 +4099,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Validation" Version="10.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql" Version="10.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     <PackageReference Include="Z.Dapper.Plus" Version="9.2.3" />
@@ -4737,6 +4741,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Operations\JSONOperations\" />
     <Folder Include="UI\node_modules\%40emnapi\" />
     <Folder Include="UI\node_modules\%40napi-rs\" />
     <Folder Include="UI\node_modules\%40tybys\" />

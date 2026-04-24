@@ -1,4 +1,4 @@
-﻿using Dapper.Contrib;
+﻿using System.ComponentModel.DataAnnotations;
 using Dapper.Contrib.Extensions;
 
 namespace PortfolioWebsite.Objects
@@ -12,7 +12,7 @@ namespace PortfolioWebsite.Objects
             string role,
             string description,
             DateOnly startDate,
-            DateOnly endDate,
+            DateOnly? endDate,
             string location
             )
         {
@@ -24,15 +24,22 @@ namespace PortfolioWebsite.Objects
             EndDate = endDate;
             Location = location;
         }
-        [Key]
+        [System.ComponentModel.DataAnnotations.Key]
+        [Required(ErrorMessage = "Id must be specified.")]
         public string Id { get; set; }
+        [MaxLength(100, ErrorMessage = "Total characters must be less than 100.")]
+        [Required(ErrorMessage = "Company must be specified.")]
         public string Company { get; set; }
+        [Required(ErrorMessage =("Role must be specified."))]
         public string Role { get; set; }
+        [MaxLength(500, ErrorMessage = "Total characters must be less than 500.")]
 
         public string Description { get; set; }
+        [Required(ErrorMessage = "Startdate must be specified.")]
         public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateOnly? EndDate { get; set; } = default;
+        [MaxLength(100)]
         public string Location { get; set; }
-        public string Duration { get; set; }
+        public string Duration => EndDate == null ? $"{new DateOnly().DayNumber - StartDate.DayNumber}" : $"{EndDate?.DayNumber - StartDate.DayNumber}";
     }
 }

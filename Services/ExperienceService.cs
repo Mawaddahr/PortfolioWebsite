@@ -1,14 +1,11 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
-using Microsoft.AspNetCore.HttpLogging;
 using PortfolioWebsite.Database;
 using PortfolioWebsite.Objects;
-using PortfolioWebsite.Operations;
 using PortfolioWebsite.Objects.InputObjects;
 
 namespace PortfolioWebsite.Services
 {
-    public class ExperienceService : IExperienceService
+    public class ExperienceService
     {
         private MawaddaDbContext _context { get; set; }
 
@@ -17,7 +14,8 @@ namespace PortfolioWebsite.Services
             _context = context;
         }
 
-        public async Task<List<Experience>?> GetExperiencesAsync()
+        // add pagination later on
+        public async Task<List<Experience>?> GetAllExperienceAsync()
         {
             var conn = await _context.ConnectionFactory.CreateConnection();
             var sql = "SELECT * FROM Experiences";
@@ -26,7 +24,7 @@ namespace PortfolioWebsite.Services
             return experiences;
         }
 
-        public async Task<Experience> GetExperienceById(string Id)
+        public async Task<Experience> GetExperienceByIdAsync(string Id)
         {
             var conn = await _context.ConnectionFactory.CreateConnection();
             var parameters = new { ID = Id };
@@ -35,7 +33,7 @@ namespace PortfolioWebsite.Services
             return experience;
         }
 
-        public async Task AddExperience(InputExperience inputexperience)
+        public async Task InsertExperienceAsync(InputExperience inputexperience)
         {
             var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
@@ -45,29 +43,27 @@ namespace PortfolioWebsite.Services
                 inputexperience.Description,
                 inputexperience.StartDate,
                 inputexperience.EndDate,
-                inputexperience.Duration
+                inputexperience.Location
                 );
             parms.Add("@Company", experience.Company);
             parms.Add("@Description", experience.Description);
-            parms.Add("@Duration", experience.Duration);
             parms.Add("@Role", experience.Role);
             parms.Add("@Location", experience.Location);
             parms.Add("@StartDate", experience.StartDate, System.Data.DbType.Date);
             parms.Add("@EndDate", experience.EndDate, System.Data.DbType.Date);
             parms.Add("@Id", experience.Id);
 
-            var sql = @"INSERT INTO Experiences (id, company, location, role, description, startdate, enddate, duration)
-                        VALUES (@Id, @Company, @Location, @Role, @Description, @StartDate, @EndDate, @Duration)";
+            var sql = @"INSERT INTO Experiences (id, company, location, role, description, startdate, enddate)
+                        VALUES (@Id, @Company, @Location, @Role, @Description, @StartDate, @EndDate)";
             await conn.ExecuteAsync(sql, parms);
         }
 
-        public async Task UpdateExperience(Experience experience)
+        public async Task UpdateExperienceAsync(Experience experience)
         {
             var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Company", experience.Company);
             parms.Add("@Description", experience.Description);
-            parms.Add("@Duration", experience.Duration);
             parms.Add("@Role", experience.Role);
             parms.Add("@Location", experience.Location);
             parms.Add("@StartDate", experience.StartDate, System.Data.DbType.Date);
@@ -76,7 +72,6 @@ namespace PortfolioWebsite.Services
             var sql = @"UPDATE Experiences
                         SET company = @Company,
                             description = @Description,
-                            duration = @Duration,
                             role = @Role,
                             location = @Location,
                             startdate = @StartDate,
@@ -85,9 +80,9 @@ namespace PortfolioWebsite.Services
             await conn.ExecuteAsync(sql, parms);
         }
 
-        public async Task DeleteExperienceById(string Id)
+        public async Task DeleteExperienceByIdAsync(string Id)
         {
-            Experience experience = await GetExperienceById(Id);
+            Experience experience = await GetExperienceByIdAsync(Id);
             var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Id", experience.Id);
