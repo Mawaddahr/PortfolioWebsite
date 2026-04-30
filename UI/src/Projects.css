@@ -1,0 +1,108 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #FFE9EB;
+}
+
+.project-main {
+    background-color: #ffffff;
+    height: auto;
+    border: solid #FFE9EB 5px;
+    margin: 60px;
+}
+
+.project-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#project-name{
+    font-family: Perandory;
+    font-size: 50px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
+#instruction-text
+{
+    font-family: Sloop;
+    font-size: 40px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin-right: 50px;
+    margin-top: 20px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    color: #FFE9EB
+}
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sloop-script-h2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 70px;
+}
+
+#title {
+    color: #023020;
+    font-family: Perandory;
+    font-size: 90px;
+}
+
+.slideshow-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-arrow, .right-arrow
+{
+    height: 300px;
+    cursor: pointer;
+}
+
+.left-arrow {
+    float: left;
+}
+.right-arrow {
+    float: right;
+}
+
+.slideshow-img {
+    height: 450px;
+    justify-content: center;
+}

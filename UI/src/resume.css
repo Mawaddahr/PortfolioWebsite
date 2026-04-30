@@ -1,0 +1,114 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+body {
+    background-color: #023020;
+}
+
+label{
+    font-family: Sloop;
+    color: #023020;
+    font-size: 50px;
+    margin: 20px;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    margin-right: 50px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.nav-btn:hover{
+    color: #FFE9EB
+}
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sloop-script-h2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 70px;
+    height: 70px;
+}
+
+.resume-container {
+    background-color: #ffffff;
+    border: 5px solid #FFE9EB;
+    box-sizing: border-box;
+    width: min(90vw, 1200px);
+    max-width: 1200px;
+    margin: 40px auto; /* center horizontally and preserve existing vertical margin */
+    height: auto; /* flexible height based on content (rows in .experiences-list) */
+}
+
+.title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.experience-company {
+    font-family: Perandory;
+    font-size: 20px;
+}
+
+.experience-role, .experience-dates{
+    font-family: Perandory;
+    font-size: 30px;
+}
+.experience-main{
+    margin: 20px;
+    color: #023020;
+}
+
+.education-main{
+    margin: 20px;
+    color: #FFE9EB;
+}
+
+.education-item {
+    background-color: #023020;
+    border: 5px solid #FFE9EB;
+    border-radius: 20px;
+}
+.experience-item {
+    background-color: #FFE9EB;
+    border: 5px solid #023020;
+    border-radius: 20px;
+}
+.experiences-list {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-content: flex-start;
+}
+
+.experiences-list > * {
+    flex: 0 1 300px;
+}
+
+#title{
+    color: #023020;
+    font-family: Perandory;
+    font-size: 90px;
+    height: 90px;
+}

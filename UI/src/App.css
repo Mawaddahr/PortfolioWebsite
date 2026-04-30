@@ -1,0 +1,193 @@
+@font-face {
+    font-family: 'Perandory';
+    src: url(fonts/PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(fonts/Sloop-ScriptThree.ttf);
+}
+
+header, body {
+    background-color: #023020;
+    justify-content: center;
+}
+
+/*main {
+    justify-content: center;
+}*/
+/*html {
+    scroll-behavior: smooth;
+}*/
+
+body {
+    background-color: #023020;
+}
+
+.homepage-main {
+    background-color: #023020;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#website-title {
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 190px;
+    text-align: center;
+    margin: 0;
+    line-height: 85px;
+}
+
+#website-title2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 100px;
+    line-height: 0px;
+    text-align: center;
+    margin: 0;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    margin-right: 50px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    color: #FFE9EB
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section {
+    background-color: #ffffff;
+    color: #023020;
+    height: auto;
+    padding-bottom: 100px;
+}
+
+.about-me-content
+{
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    background-color: #023020;
+    color: #ffffff;
+    padding: 10px;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}
+
+.tag-row, .contact-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.contact-row {
+    position: fixed;
+}
+
+#about {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 0;
+    font-family: Perandory;
+    font-size: 70px;
+    color: #023020;
+}
+
+#about2 {
+    margin-top: 20px;
+/*    margin-left: 20px;*/
+    margin-bottom: 0;
+    font-family: Sloop;
+    font-size: 70px;
+    color: #FFE9EB;
+}
+
+#about-me-text {
+    font-size: 20px;
+    font-family: Perandory;
+    color: #023020;
+    width: 50%;
+    padding-left: 20px;
+    text-align: justify;
+    white-space: pre-line;
+}
+
+#about-me-img {
+    display: block;
+    width: auto;
+    height: 400px;
+    margin-right: 100px;
+    border-radius: 40px;
+    border: 4px solid #023020;
+}
+
+#contact {
+    font-family: Perandory;
+    font-size: 70px;
+    color: #FFE9EB;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#contact2 {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-family: Sloop;
+    font-size: 70px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.contact-container {
+    text-align: right;
+    bottom: 30px;
+    position: fixed;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.contact-btn {
+    border: 0;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    text-align: right;
+    background-color: transparent;
+    border-right: 1px solid #ffffff;
+    margin-right: 50px;
+    text-decoration: none;
+}
+
+.contact-btn:hover
+{
+    color: #FFE9EB;
+}
