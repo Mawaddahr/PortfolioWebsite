@@ -40,6 +40,5 @@ namespace PortfolioWebsite.Objects
         public DateOnly? EndDate { get; set; } = default;
         [MaxLength(100)]
         public string Location { get; set; }
-        public string Duration => EndDate == null ? $"{new DateOnly().DayNumber - StartDate.DayNumber}" : $"{EndDate?.DayNumber - StartDate.DayNumber}";
     }
 }

@@ -1,4 +1,5 @@
-﻿using PortfolioWebsite.Objects;
+﻿using GreenDonut.Data;
+using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 
 
@@ -10,6 +11,7 @@ namespace PortfolioWebsite.Operations.Queries
 
         //getall, get
 
+        [UsePaging(MaxPageSize = 5)]
         public async Task<List<Education>?> GetAllEducationAsync([Service("educationService")] EducationService educationService)
         {
             List<Education> AllEducation = await educationService.GetAllEducationAsync();

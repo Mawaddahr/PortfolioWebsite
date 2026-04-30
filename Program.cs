@@ -6,6 +6,7 @@ using PortfolioWebsite.Operations.Mutations;
 using PortfolioWebsite.Operations.Queries;
 using PortfolioWebsite.Services;
 
+var AllowSpecificOrigins = "_allowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddTransient<MawaddaDbContext>(_
@@ -33,9 +34,17 @@ Microsoft.Extensions.DependencyInjection.ValidationServiceCollectionExtensions.A
     options => { }
 );
 
+builder.Services.AddCors(options =>
+options.AddPolicy(name: AllowSpecificOrigins,
+                        policy =>
+                        {
+                            policy.WithOrigins("http://localhost:5173")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                        }));
+
 FluentMapper.Initialize(config =>
 config.AddMap(new ExperienceMap()));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,11 +52,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 //app.UseHttpsRedirection();
 
 //app.UseAuthorization();
-
+app.UseCors(AllowSpecificOrigins);
 app.MapGraphQL();
 
 {

@@ -13,13 +13,13 @@ html {
 }
 
 body {
-    background-color: #ffc5d9;
+    background-color: #FFE9EB;
 }
 
 .project-main {
     background-color: #ffffff;
-    height: 100vh;
-    border: solid #ffc5d9 5px;
+    height: auto;
+    border: solid #FFE9EB 5px;
     margin: 60px;
 }
 
@@ -30,6 +30,24 @@ body {
     text-align: center;
     justify-content: center;
 }
+
+#project-name{
+    font-family: Perandory;
+    font-size: 50px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
+#instruction-text
+{
+    font-family: Sloop;
+    font-size: 40px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
 .nav-btn {
     border: none;
     cursor: pointer;
@@ -40,8 +58,12 @@ body {
     margin-right: 50px;
     margin-top: 20px;
     border-right: 1px solid #ffffff;
+    text-decoration: none;
 }
 
+.nav-btn:hover {
+    color: #FFE9EB
+}
 .nav-container {
     display: flex;
     align-items: center;
@@ -49,7 +71,7 @@ body {
 }
 
 .sloop-script-h2 {
-    color: #ffc5d9;
+    color: #FFE9EB;
     font-family: Sloop;
     font-size: 70px;
 }
@@ -81,6 +103,6 @@ body {
 }
 
 .slideshow-img {
-    height: 300px;
+    height: 450px;
     justify-content: center;
 }

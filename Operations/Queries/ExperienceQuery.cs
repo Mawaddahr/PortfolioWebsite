@@ -13,6 +13,7 @@ namespace PortfolioWebsite.Operations.Queries
             return experience;
         }
 
+        [UsePaging(MaxPageSize = 5)]
         public async Task<List<Experience>> GetExperiencesAsync([Service("experienceService")] ExperienceService experienceService)
         {
             List<Experience> experiences = await experienceService.GetAllExperienceAsync();

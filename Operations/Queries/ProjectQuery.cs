@@ -9,6 +9,7 @@ namespace PortfolioWebsite.Operations.Queries
     {
         //get all, get
 
+        [UsePaging(MaxPageSize = 5)]
         public async Task<List<Project>> GetProjectsAsync([Service("projectService")] ProjectService projectService)
         {
             return await projectService.GetAllProjectsAsync();

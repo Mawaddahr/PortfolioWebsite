@@ -7,7 +7,7 @@ namespace PortfolioWebsite.Objects.InputObjects
         [MaxLength(100, ErrorMessage = "Total characters must be less than 100.")]
         [Required(ErrorMessage = "Company must be specified.")]
         public string Company { get; set; }
-        [Required(ErrorMessage = ("Role must be specifiekd."))]
+        [Required(ErrorMessage = ("Role must be specified."))]
         public string Role { get; set; }
         [MaxLength(500, ErrorMessage = "Total characters must be less than 500.")]
 
