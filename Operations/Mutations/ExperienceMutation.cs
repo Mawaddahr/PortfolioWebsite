@@ -1,6 +1,7 @@
 ﻿using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 using PortfolioWebsite.Objects.InputObjects;
+using FluentValidation;
 
 namespace PortfolioWebsite.Operations.Mutations
 {
@@ -8,15 +9,23 @@ namespace PortfolioWebsite.Operations.Mutations
     public class ExperienceMutation
     {
         [UseResolverScope]
-        public async Task<string> InsertExperienceAsync(InputExperience experience, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> InsertExperienceAsync(InputExperience experience,
+            [Service("experienceService")] ExperienceService experienceService,
+            [Service("experienceValidator")] IValidator<InputExperience> experienceValidator)
         {
+            var validating = await experienceValidator.ValidateAsync(experience);
+
+            if (!validating.IsValid)
+            {
+                throw new ValidationException($"Failed to insert experience :{validating.Errors.Select(e => e.ErrorMessage)}");
+            }
             try
             {
                 await experienceService.InsertExperienceAsync(experience);
             }
             catch (Exception e)
                 {
-                throw new Exception($"You dumb fuck this is your error: {e}");
+                throw new Exception($"This is your error: {e}");
             }
             return "great job!";
         }

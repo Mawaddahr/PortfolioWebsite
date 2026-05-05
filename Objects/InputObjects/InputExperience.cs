@@ -14,7 +14,7 @@ namespace PortfolioWebsite.Objects.InputObjects
         public string Description { get; set; }
         [Required(ErrorMessage = "Startdate must be specified.")]
         public DateOnly StartDate { get; set; }
-        public DateOnly? EndDate { get; set; } = default;
+        public DateOnly EndDate { get; set; } = default;
         [MaxLength(100)]
         public string Location { get; set; }
     }
