@@ -11,14 +11,9 @@ namespace PortfolioWebsite.Operations.Mutations
         [UseResolverScope]
         public async Task<string> InsertExperienceAsync(InputExperience experience,
             [Service("experienceService")] ExperienceService experienceService,
-            [Service("experienceValidator")] IValidator<InputExperience> experienceValidator)
+            [Service("inputExperienceValidator")] IValidator<InputExperience> experienceValidator)
         {
-            var validating = await experienceValidator.ValidateAsync(experience);
-
-            if (!validating.IsValid)
-            {
-                throw new ValidationException($"Failed to insert experience :{validating.Errors.Select(e => e.ErrorMessage)}");
-            }
+            await experienceValidator.ValidateAndThrowAsync(experience);
             try
             {
                 await experienceService.InsertExperienceAsync(experience);
@@ -30,8 +25,11 @@ namespace PortfolioWebsite.Operations.Mutations
             return "great job!";
         }
 
-        public async Task<string> UpdateExperienceAsync(Experience experience, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> UpdateExperienceAsync(Experience experience,
+            [Service("experienceService")] ExperienceService experienceService,
+            [Service("experienceValidator")] IValidator<Experience> experienceValidator)
         {
+            await experienceValidator.ValidateAndThrowAsync(experience);
             try
             {
                 await experienceService.UpdateExperienceAsync(experience);
@@ -43,8 +41,14 @@ namespace PortfolioWebsite.Operations.Mutations
             return "succesfully updated experience!";
         }
 
-        public async Task<string> DeleteExperienceAsync(string id, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> DeleteExperienceAsync(string id,
+            [Service("experienceService")] ExperienceService experienceService)
         {
+            var idValidator = new InlineValidator<string>();
+            idValidator.RuleFor(x => x)
+                .NotEmpty().WithMessage("Id must not be empty.");
+
+            await idValidator.ValidateAndThrowAsync(id);
             try
             {
                 await experienceService.DeleteExperienceByIdAsync(id);
