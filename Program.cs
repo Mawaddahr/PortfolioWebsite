@@ -1,20 +1,44 @@
 using Dapper.FluentMap;
 using DataAnnotatedModelValidations;
-using HotChocolate.AspNetCore;
+using FluentValidation;
 using PortfolioWebsite.Database;
+using PortfolioWebsite.Objects;
+using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Operations.Mutations;
 using PortfolioWebsite.Operations.Queries;
 using PortfolioWebsite.Services;
+using PortfolioWebsite.Validators;
 
 var AllowSpecificOrigins = "_allowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddOpenApi();
 builder.Services.AddTransient<MawaddaDbContext>(_
     => new MawaddaDbContext(new NpgsqlConnectionFactory(builder.Configuration)));
+
 builder.Services.AddKeyedScoped<ExperienceService>("experienceService");
+builder.Services.AddKeyedScoped<IValidator<InputExperience>,
+    InputExperienceValidator>("inputExperienceValidator");
+builder.Services.AddKeyedScoped<IValidator<Experience>,
+    ExperienceValidator>("experienceValidator");
+
 builder.Services.AddKeyedScoped<EducationService>("educationService");
+builder.Services.AddKeyedScoped<IValidator<InputEducation>,
+    InputEducationValidator>("inputEducationValidator");
+builder.Services.AddKeyedScoped<IValidator<Education>,
+    EducationValidator>("educationValidator");
+
 builder.Services.AddKeyedScoped<ProjectService>("projectService");
+builder.Services.AddKeyedScoped<IValidator<InputProject>,
+    InputProjectValidator>("inputProjectValidator");
+builder.Services.AddKeyedScoped<IValidator<Project>,
+    ProjectValidator>("projectValidator");
+
+builder.Services.AddKeyedScoped<IValidator<(string id, string table)>,
+    IdValidator>("idValidator");
+
 builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
+
 builder.Services
     .AddGraphQLServer()
     .AddDataAnnotationsValidator()

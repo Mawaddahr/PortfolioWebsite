@@ -43,6 +43,7 @@ namespace PortfolioWebsite.Objects
 
         [Required(ErrorMessage = "Specify whether the study program is still ongoing.")]
         public bool OnGoing { get; set; }
+        [Required(ErrorMessage = "Specify (estimated) end date.")]
         public DateOnly EndDate { get; set; }
 
         }

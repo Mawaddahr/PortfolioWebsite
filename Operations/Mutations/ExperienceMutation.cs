@@ -1,6 +1,8 @@
 ﻿using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 using PortfolioWebsite.Objects.InputObjects;
+using FluentValidation;
+using PortfolioWebsite.Validators;
 
 namespace PortfolioWebsite.Operations.Mutations
 {
@@ -8,43 +10,92 @@ namespace PortfolioWebsite.Operations.Mutations
     public class ExperienceMutation
     {
         [UseResolverScope]
-        public async Task<string> InsertExperienceAsync(InputExperience experience, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> InsertExperienceAsync(InputExperience experience,
+            [Service("experienceService")] ExperienceService experienceService,
+            [Service("inputExperienceValidator")] IValidator<InputExperience> experienceValidator)
         {
             try
             {
+                await experienceValidator.ValidateAndThrowAsync(experience);
                 await experienceService.InsertExperienceAsync(experience);
+                return "Succesfully inserted experience.";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
             }
             catch (Exception e)
-                {
-                throw new Exception($"You dumb fuck this is your error: {e}");
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to insert experience.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
             }
-            return "great job!";
         }
 
-        public async Task<string> UpdateExperienceAsync(Experience experience, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> UpdateExperienceAsync(Experience experience,
+            [Service("experienceService")] ExperienceService experienceService,
+            [Service("experienceValidator")] IValidator<Experience> experienceValidator)
         {
             try
             {
+                await experienceValidator.ValidateAndThrowAsync(experience);
                 await experienceService.UpdateExperienceAsync(experience);
+                return "succesfully updated experience.";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
             }
             catch (Exception e)
             {
-                throw new Exception($"{e}");
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to update experience.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
             }
-            return "succesfully updated experience!";
         }
 
-        public async Task<string> DeleteExperienceAsync(string id, [Service("experienceService")] ExperienceService experienceService)
+        public async Task<string> DeleteExperienceAsync(string id,
+            [Service("experienceService")] ExperienceService experienceService,
+            [Service("idValidator")] IValidator<(string id, string table)> idValidator)
         {
             try
             {
+                string table = "Experiences";
+                await idValidator.ValidateAndThrowAsync((id, table));
                 await experienceService.DeleteExperienceByIdAsync(id);
+                return "succesfully deleted experience!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
             }
             catch (Exception e)
             {
-                throw new Exception($"{e}");
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to delete experience.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
             }
-            return "succesfully deleted experience!";
         }
     }
 }
