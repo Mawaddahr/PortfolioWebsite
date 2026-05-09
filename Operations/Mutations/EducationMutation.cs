@@ -15,36 +15,88 @@ namespace PortfolioWebsite.Operations.Mutations
             [Service("educationService")] EducationService educationService,
             [Service("inputEducationValidator")] IValidator<InputEducation> educationValidator)
         {
-            await educationValidator.ValidateAndThrowAsync(inputEducation);
-            try { await educationService.InsertEducationAsync(inputEducation); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return "Education succesfully inserted!";
+            try
+            {
+                await educationValidator.ValidateAndThrowAsync(inputEducation);
+                await educationService.InsertEducationAsync(inputEducation);
+                return "Education succesfully inserted!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to insert education.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
 
         public async Task<string> UpdateEducationAsync(Education education,
             [Service("educationService")] EducationService educationService,
             [Service("educationValidator")] IValidator<Education> educationValidator)
         {
-            await educationValidator.ValidateAndThrowAsync(education);
-            try { await educationService.UpdateEducationAsync(education); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return $"Education with id: {education.Id} succesfully updated!";
+            try
+            {
+                await educationValidator.ValidateAndThrowAsync(education);
+                await educationService.UpdateEducationAsync(education);
+                return $"Education with id: {education.Id} succesfully updated!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to update education.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
 
         public async Task<string> DeleteEducationAsync(string Id,
-            [Service("educationService")] EducationService educationService)
+            [Service("educationService")] EducationService educationService,
+            [Service("idValidator")] IValidator<(string id, string table)> idValidator)
         {
             string table = "Education";
-            var idValidator = new InlineValidator<string>();
-            idValidator.RuleFor(x => x)
-                .NotEmpty()
-                .WithMessage("Id must not be empty.");
-
-            await idValidator.ValidateAndThrowAsync(Id);
-
-            try { await educationService.DeleteEducationAsync(Id); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return $"Education with id: {Id} succesfully deleted!";
+            try
+            {
+                await idValidator.ValidateAndThrowAsync((Id, table));
+                await educationService.DeleteEducationAsync(Id);
+                return $"Education with id: {Id} succesfully deleted!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to delete education.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
     }
 }

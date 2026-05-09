@@ -34,6 +34,9 @@ builder.Services.AddKeyedScoped<IValidator<InputProject>,
 builder.Services.AddKeyedScoped<IValidator<Project>,
     ProjectValidator>("projectValidator");
 
+builder.Services.AddKeyedScoped<IValidator<(string id, string table)>,
+    IdValidator>("idValidator");
+
 builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
 
 builder.Services

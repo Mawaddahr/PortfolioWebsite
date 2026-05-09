@@ -12,10 +12,20 @@ namespace PortfolioWebsite.Validators
         public EducationValidator(MawaddaDbContext context)
         {
             _context = context;
-            RuleFor(e => e.Id).MustAsync(IdMustExist)
+            RuleFor(e => e.Id)
+                .MustAsync(IdMustExist)
                 .WithMessage("Id does not exist.");
-            RuleFor(e => e.EndDate).Must(LaterThanStartDate)
+
+            RuleFor(e => e.EndDate)
+                .NotEmpty()
+                .WithMessage("End date cannot be empty.")
+                .Must(LaterThanStartDate)
                 .WithMessage("EndDate must be later than StartDate.");
+
+            RuleFor(e => e.StartDate)
+                .NotEmpty()
+                .WithMessage("Start date cannot be empty.");
+
             RuleFor(e => e.OnGoing).Must(TrueIfLaterThanDT)
                 .WithMessage("Education is still ongoing.");
         }

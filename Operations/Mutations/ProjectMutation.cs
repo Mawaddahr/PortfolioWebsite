@@ -14,33 +14,88 @@ namespace PortfolioWebsite.Operations.Mutations
             [Service("projectService")] ProjectService projectService,
             [Service("inputProjectValidator")] IValidator<InputProject> inputProjectValidator)
         {
-            await inputProjectValidator.ValidateAndThrowAsync(inputProject);
-            try { await projectService.InsertProjectAsync(inputProject); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return "Succesfully inserted project!";
+            try
+            {
+                await inputProjectValidator.ValidateAndThrowAsync(inputProject);
+                await projectService.InsertProjectAsync(inputProject);
+                return "Succesfully inserted project!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to insert project.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
 
         public async Task<string> UpdateProjectAsync(Project project,
             [Service("projectService")] ProjectService projectService,
             [Service("projectValidator")] IValidator<Project> projectValidator)
         {
-            await projectValidator.ValidateAndThrowAsync(project);
-            try { await projectService.UpdateProjectAsync(project); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return "Succesfully updated project!";
+            try
+            {
+                await projectValidator.ValidateAndThrowAsync(project);
+                await projectService.UpdateProjectAsync(project);
+                return "Succesfully updated project!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to update project.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
 
         public async Task<string> DeleteProjectAsync(string Id,
-            [Service("projectService")] ProjectService projectService)
+            [Service("projectService")] ProjectService projectService,
+            [Service("idValidator")] IValidator<(string id, string table)> idValidator)
         {
-            var idValidator = new InlineValidator<string>();
-            idValidator.RuleFor(x => x)
-                .NotEmpty().WithMessage("Id must not be empty.");
-
-            await idValidator.ValidateAndThrowAsync(Id);
-            try { await projectService.DeleteProjectAsync(Id); }
-            catch (Exception e) { throw new Exception($"{e}"); }
-            return "Succesfully deleted project!";
+            try
+            {
+                string table = "Projects";
+                await idValidator.ValidateAndThrowAsync((Id, table));
+                await projectService.DeleteProjectAsync(Id);
+                return "Succesfully deleted project!";
+            }
+            catch (ValidationException e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder.New()
+                    .SetMessage(e.Message)
+                    .SetCode("VALIDATION ERROR")
+                    .Build());
+            }
+            catch (Exception e)
+            {
+                throw new GraphQLException(
+                    ErrorBuilder
+                    .New()
+                    .SetMessage("Failed to delete project.")
+                    .SetExtension("detail", e.Message)
+                    .Build());
+            }
         }
     }
 }
