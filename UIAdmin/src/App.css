@@ -1,0 +1,65 @@
+
+@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+body {
+    background-color: #023020;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    margin-right: 50px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+    .nav-btn:hover {
+        color: #FFE9EB;
+    }
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#website-title {
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 120px;
+    text-align: center;
+    margin: 0;
+    line-height: 85px;
+}
+
+#website-title2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 80px;
+    line-height: 0px;
+    text-align: center;
+    margin: 0;
+}
+
+.homepage-main {
+    background-color: #023020;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+

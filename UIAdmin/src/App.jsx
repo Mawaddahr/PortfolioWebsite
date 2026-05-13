@@ -1,0 +1,19 @@
+import './App.css'
+import { Link } from 'react-router-dom';
+function App() {
+
+    return (<>
+        <header>
+            <nav className="nav-container">
+                <Link className="nav-btn" to="/AboutMe">About me</Link>
+                <Link className="nav-btn" to="/Resume">Resumé</Link>
+                <Link className="nav-btn" to="/Projects">Projects</Link>
+            </nav>
+        </header>
+        <main className="homepage-main">
+        <h1 id= "website-title"> Admin panel</h1>
+            <div id="website-title2">mawadda-alkhorchani.nl</div>
+        </main>
+    </>)
+}
+export default App
