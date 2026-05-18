@@ -32,13 +32,13 @@ namespace PortfolioWebsite.Endpoints
                 await file.CopyToAsync(stream);
 
                 var imageUrl =
-                    $"{request.Scheme}://{request.Host}/uploads/{fileName}";
+                    $"{request.Scheme}://{request.Host}/imguploads/{fileName}";
 
                 return Results.Ok(new
                 {
                     imageUrl
                 });
-            });
+            }).DisableAntiforgery();
         }
     }
 }

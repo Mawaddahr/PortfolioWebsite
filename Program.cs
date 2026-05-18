@@ -59,6 +59,9 @@ Microsoft.Extensions.DependencyInjection.ValidationServiceCollectionExtensions.A
     options => { }
 );
 
+//builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication();
+//builder.Services.AddAntiforgery();
 builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
@@ -78,13 +81,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 //app.UseHttpsRedirection();
-
+//app.UseAuthentication();
 //app.UseAuthorization();
 app.UseCors(AllowSpecificOrigins);
 app.MapGraphQL();
+//app.UseAntiforgery();
 app.UseStaticFiles();
 app.MapUploadEndpoints();
-
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MawaddaDbContext>();

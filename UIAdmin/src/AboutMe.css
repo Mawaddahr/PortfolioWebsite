@@ -15,6 +15,26 @@ header{
     display: flex;
     flex-direction: row;
 }
+section
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+textarea
+{
+    margin: 0;
+}
+article
+{
+    width : max-content;
+}
+.buttons{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .nav-btn {
     border: none;
     cursor: pointer;
@@ -95,18 +115,30 @@ textarea
 
 #about-me-img
 {
-    height: 200px;
+    margin-right: 200px;
+    height: 500px;
     border-radius: 20px;
     border: 5px solid #FFE9EB;
 }
 
-#edit-img-btn
+#edit-img-btn, #save-img-btn
 {
+    margin-right: 500px;
     border-radius: 20px;
-    background-color: #FFE9EB;
-    border: 5px solid #023020;
     font-family: Perandory;
     font-size: 20px;
     height: 50px;
     width: 150px;
+}
+
+#edit-img-btn {
+    background-color: #FFE9EB;
+    border: 5px solid #023020;
+    color: #023020;
+}
+
+#save-img-btn {
+    background-color: #023020;
+    border: 5px solid #FFE9EB;
+    color: #FFE9EB;
 }
