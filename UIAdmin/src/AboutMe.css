@@ -11,17 +11,76 @@
 body {
     background-color: #ffffff;
 }
+header{
+    display: flex;
+    flex-direction: row;
+}
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #023020;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    margin-right: 50px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    color: #FFE9EB;
+}
+
+.nav-container {
+    margin: auto;
+    max-width: max-content;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 textarea
 {
     resize: none;
+    background-color: #FFE9EB
+}
+
+#show-text-btn
+{
+    border-radius: 20px;
+    background-color: #FFE9EB;
+    border: 5px solid #023020;
+    font-family: Perandory;
+    font-size: 20px;
+    height: 50px;
+    width: 150px;
+}
+
+.about-container{
+    margin-left: 0;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    font-size: 35px;
+}
+
+#about {
+    font-family: Perandory;
+    color: #023020;
+}
+
+#about2 {
+    font-family: Sloop;
+    color: #FFE9EB;
 }
 
 #about-me-text {
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    width: 400px;
     border-radius: 20px;
-    border: 5px solid #FFE9EB;
+    border: 5px solid #023020;
 }
 
 #about-me-text-unedited {
@@ -32,4 +91,22 @@ textarea
     padding-left: 20px;
     text-align: justify;
     white-space: pre-line;
+}
+
+#about-me-img
+{
+    height: 200px;
+    border-radius: 20px;
+    border: 5px solid #FFE9EB;
+}
+
+#edit-img-btn
+{
+    border-radius: 20px;
+    background-color: #FFE9EB;
+    border: 5px solid #023020;
+    font-family: Perandory;
+    font-size: 20px;
+    height: 50px;
+    width: 150px;
 }
