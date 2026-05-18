@@ -4750,6 +4750,7 @@
     <Folder Include="UI\node_modules\%40napi-rs\" />
     <Folder Include="UI\node_modules\%40tybys\" />
     <Folder Include="UI\node_modules\.vite-temp\" />
+    <Folder Include="wwwroot\imguploads\" />
   </ItemGroup>
 
 </Project>

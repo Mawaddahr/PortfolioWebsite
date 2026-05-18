@@ -2,6 +2,7 @@ using Dapper.FluentMap;
 using DataAnnotatedModelValidations;
 using FluentValidation;
 using PortfolioWebsite.Database;
+using PortfolioWebsite.Endpoints;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Operations.Mutations;
@@ -81,6 +82,8 @@ if (app.Environment.IsDevelopment())
 //app.UseAuthorization();
 app.UseCors(AllowSpecificOrigins);
 app.MapGraphQL();
+app.UseStaticFiles();
+app.MapUploadEndpoints();
 
 {
     using var scope = app.Services.CreateScope();
@@ -88,4 +91,4 @@ app.MapGraphQL();
     await context.Init();
 }
 
-app.Run();
+app.Run("http://localhost:5142");
