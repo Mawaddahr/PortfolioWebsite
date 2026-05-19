@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/" element={<App />} />
             <Route path="/LogIn" element={<LogIn />} />
             <Route path="/AboutMe" element={<ApolloProvider client={client}><AboutMe /></ApolloProvider>} />
-            <Route path="/Resume" element={<Resume/>}/>
+            <Route path="/Resume" element={<ApolloProvider client= {client}><Resume/></ApolloProvider>}/>
             <Route path="/Projects" element={<Projects/> }/>
         </Routes>
     </BrowserRouter >

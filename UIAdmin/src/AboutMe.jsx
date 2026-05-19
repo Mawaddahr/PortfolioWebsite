@@ -118,6 +118,8 @@ function AboutMe() {
 
     return (
         <>
+            <div className="abt-me">
+            <div className="abt-me-body">
             <header>
                 <div className="about-container">
                     <h2 id="about">About</h2>
@@ -129,6 +131,7 @@ function AboutMe() {
                 <Link className="nav-btn" to="/Projects">Projects</Link>
                 </nav>
             </header>
+            <main className='abt-me-main'>
             <div className="buttons">
             <button id="show-text-btn" onClick={handleText}>{buttonText}</button>
             <form>
@@ -169,7 +172,10 @@ function AboutMe() {
                     </article>
                 )}
                     <img id="about-me-img" src={abtMeImg} alt="about me image."/>
-            </section>
+                    </section>
+                    </main>
+            </div>
+            </div>
         </>
     )
 }

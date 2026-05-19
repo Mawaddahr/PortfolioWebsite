@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 function App() {
 
     return (<>
+        <div className="app">
+        <div className='app-body'>
         <header>
             <nav className="nav-container">
                 <Link className="nav-btn" to="/AboutMe">About me</Link>
@@ -14,6 +16,8 @@ function App() {
         <h1 id= "website-title"> Admin panel</h1>
             <div id="website-title2">mawadda-alkhorchani.nl</div>
         </main>
+        </div>
+        </div>
     </>)
 }
 export default App

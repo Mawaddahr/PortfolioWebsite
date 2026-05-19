@@ -1,0 +1,122 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+html,
+body,
+#root {
+    height: 100vh;
+    margin: 0;
+}
+
+.resume {
+    background-color: #023020;
+    height: 100%;
+    padding: 20px;
+}
+
+.resume-body {
+    height: 90%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 5px solid #FFE9EB;
+    padding: 10px;
+}
+
+.resume-main
+{
+    height: fit-content;
+}
+
+.experience-list, .education-list {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-content: flex-start;
+}
+
+.experience-list > * {
+    flex: 0 1 300px;
+}
+.education-list > * {
+    flex: 0 1 300px;
+}
+
+.experience-container, .education-container
+{
+    border-radius: 20px;
+}
+
+.experience-container
+{
+    border: 5px solid #023020;
+    background-color: #FFE9EB;
+    padding: 20px;
+}
+
+.education-container {
+    border: 5px solid #FFE9EB;
+    background-color: #023020;
+    padding: 20px;
+}
+
+#role, #studyProgram
+{
+    font-size: 30px;
+}
+
+#company, #role, #ex-endDate, #ex-startDate
+{
+    font-family: Perandory;
+    color: #023020;
+}
+
+#institution, #studyProgram, #ed-endDate, #ed-startDate {
+    font-family: Perandory;
+    color: #FFE9EB;
+}
+
+#education-title, #experience-title
+{
+    font-family: Sloop;
+    color: #023020;
+    font-size: 50px;
+}
+
+#resume-title {
+    margin-top: 0;
+    font-family: Perandory;
+    color: #023020;
+}
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #023020;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    color: #FFE9EB;
+}
+
+.nav-container {
+    margin-top: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

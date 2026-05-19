@@ -9,8 +9,22 @@
     src: url(Sloop-ScriptThree.ttf);
 }
 
-body {
-    background-color: #023020;
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+}
+.app {
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.app-body {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .nav-btn {
@@ -26,9 +40,9 @@ body {
     text-decoration: none;
 }
 
-    .nav-btn:hover {
-        color: #FFE9EB;
-    }
+.nav-btn:hover {
+    color: #FFE9EB;
+}
 
 .nav-container {
     display: flex;
@@ -55,8 +69,10 @@ body {
 
 .homepage-main {
     background-color: #023020;
-    height: 100vh;
+    border-radius: 20px;
+    border: 5px solid #FFE9EB;
     display: flex;
+    height: 100vh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
