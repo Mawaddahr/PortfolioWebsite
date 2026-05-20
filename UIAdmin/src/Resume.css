@@ -16,12 +16,12 @@ body,
 
 .resume {
     background-color: #023020;
-    height: 100%;
+    height: fit-content;
     padding: 20px;
 }
 
 .resume-body {
-    height: 90%;
+    height: fit-content;
     background-color: #ffffff;
     border-radius: 20px;
     border: 5px solid #FFE9EB;
@@ -119,4 +119,52 @@ body,
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.submit-ed-container, .submit-ex-container
+{
+    display: flex;
+    flex-direction: row;
+}
+.input-ex, #add-ed, form{
+    font-size: 50px;
+    font-family: Sloop;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-ex, .input-ed{
+    margin-right: 50px;
+}
+
+label, #onGoing
+{
+    font-size: 30px;
+    font-family: Sloop;
+}
+
+input[type="date"]:not(.has-value):before{
+    color: darkgray;
+    content: attr(placeholder);
+}
+input[type="text"], input[type="date"]
+{
+    height: fit-content;
+    width: fit-content;
+    padding: 10px;
+    color: lightpink;
+    font-family: Perandory;
+    font-size: 20px;
+    border-radius: 20px;
+    border: 2px solid #023020;
+    margin-bottom: 10px;
+}
+
+input[type="text"]::placeholder{
+    text-align: center;
+}
+
+#onGoing
+{
+    color: lightpink;
 }
