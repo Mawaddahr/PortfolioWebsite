@@ -49,16 +49,47 @@ body,
     flex: 0 1 300px;
 }
 
-.experience-container, .education-container
+.experience-container, .education-container, .experience-button
 {
     border-radius: 20px;
 }
 
-.experience-container
+.experience-container, .experience-button
 {
     border: 5px solid #023020;
     background-color: #FFE9EB;
     padding: 20px;
+}
+
+.experience-button
+{
+    animation: horizontal-shaking 0.4s infinite;
+}
+
+@keyframes horizontal-shaking {
+    0% {
+        transform: translateX(0)
+    }
+
+    25% {
+        transform: translateX(5px)
+    }
+
+    50% {
+        transform: translateX(-5px)
+    }
+
+    75% {
+        transform: translateX(5px)
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
+
+.experience-button:hover{
+    animation: horizontal-shaking 0.2s infinite;
 }
 
 .education-container {
@@ -147,10 +178,10 @@ input[type="date"]:not(.has-value):before{
     color: darkgray;
     content: attr(placeholder);
 }
-input[type="text"], input[type="date"]
+input[type="text"], input[type="date"], #input-ex-description
 {
-    height: fit-content;
-    width: fit-content;
+    min-height: fit-content;
+    min-width: fit-content;
     padding: 10px;
     color: lightpink;
     font-family: Perandory;
@@ -160,11 +191,24 @@ input[type="text"], input[type="date"]
     margin-bottom: 10px;
 }
 
-input[type="text"]::placeholder{
+input[type="text"]::placeholder, #input-ex-description::placeholder{
     text-align: center;
 }
-
-#onGoing
+#input-ex-description
 {
+    height: 100px;
+}
+#onGoing {
     color: lightpink;
+}
+
+#add-exform-btn, #hide-exform-btn, #submit-exform-btn, #del-ex-btn, #cancel-del-ex-btn {
+    height: fit-content;
+    border: 5px solid #023020;
+    border-radius: 20px;
+    font-size: 40px;
+    font-family: Sloop;
+    background-color: #FFE9EB;
+    padding: 20px;
+    margin: 10px;
 }

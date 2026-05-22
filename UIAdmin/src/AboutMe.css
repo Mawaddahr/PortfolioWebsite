@@ -96,11 +96,16 @@ textarea
     color: #FFE9EB;
 }
 
-#about-me-text {
+#about-me-text[type="text"] {
+    font-family: Perandory;
     height: 400px;
     width: 400px;
     border-radius: 20px;
     border: 5px solid #023020;
+}
+#about-me-text
+{
+    padding: 20px;
 }
 
 #about-me-text-unedited {

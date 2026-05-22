@@ -10,6 +10,7 @@ query{
     {
         nodes
         {
+            id,
             institution,
             studyProgram,
             startDate,
@@ -24,6 +25,7 @@ query{
     {
         nodes
         {
+            id,
             company,
             role,
             startDate,
@@ -31,6 +33,20 @@ query{
         }
     }
 }`;
+
+
+const INSERT_EXPERIENCE = gql`
+        mutation insertExperience($experience: InputExperienceInput!) {
+        insertExperience(experience: $experience)
+        }
+    `;
+
+const DELETE_EXPERIENCE = gql`mutation deleteExperience($id: String!)
+  {
+      deleteExperience(id: $id)
+  }
+`;
+
 function EducationData() {
     const {data} = useQuery(GET_EDUCATION);
     const education = data?.allEducation.nodes || [{ institution: "you suck" }];
@@ -47,25 +63,47 @@ function EducationData() {
         </>);
 }
 
-function ExperienceData() {
+function ExperienceData(isButton) {
     const { data } = useQuery(GET_EXPERIENCE);
     const experience = data?.experiences.nodes || [{ company: "you suck" }];
+    const [deleteExperience] = useMutation(DELETE_EXPERIENCE);
+
+    async function handleDeleteEx(id) {
+        if (window.confirm("Are you sure you want to delete this experience?")) {
+            await deleteExperience({
+                variables: {
+                    id: id
+                }
+            });
+        }
+    }
     return (<>
         <div className="experience-list">
-        {
-            experience.map((ex, i) => (
-                <div className="experience-container" key={i }>
-                    <div id="company">{ex.company}</div>
-                    <div id="role">{ex.role}</div>
-                    <div id="ex-endDate">{ex.startDate} - {ex.endDate}</div>
-                </div>))
+            {
+                experience.map((ex, i) => ( isButton == false ?
+                    <div className="experience-container" key={ex.id ?? i}>
+                        <div id="company">{ex.company}</div>
+                        <div id="role">{ex.role}</div>
+                        <div id="ex-endDate">{ex.startDate} - {ex.endDate}</div>
+                    </div> : <button className="experience-button" key={ex.id ?? i} onClick={async () => await handleDeleteEx(ex.id ?? i)}>
+                        <div id="company">{ex.company}</div>
+                        <div id="role">{ex.role}</div>
+                        <div id="ex-endDate">{ex.startDate} - {ex.endDate}</div>
+                    </button>))
         }</div></>);
 }
 function Resume() {
     const educationFormData = useRef();
     const experienceFormData = useRef();
+    const [showExForm, setShowExForm] = useState(false);
+    const [isClickable, setIsClickable] = useState(false);
+    const [insertExperience] = useMutation(INSERT_EXPERIENCE);
 
-    const handleSubmitExperience = (e) => {
+    const handleAddExForm = () => {
+        showExForm == false ? setShowExForm(true) : setShowExForm(false);
+    }
+
+    const handleSubmitExperience = async (e) => {
         e.preventDefault();
         const company = experienceFormData.current.company.value
         const role = experienceFormData.current.role.value
@@ -74,7 +112,36 @@ function Resume() {
         const endDate = experienceFormData.current.enddate.value
         const location = experienceFormData.current.location.value
         alert("You submitted the form, yay!");
-        console.log(company, role, description, startDate, endDate, location);
+
+        await insertExperience({
+            variables: {
+                experience: {
+                    company: company,
+                    role: role,
+                    description: description,
+                    startDate: startDate,
+                    endDate: endDate,
+                    location: location
+                }
+            }
+        });
+
+        experienceFormData.current.company.value = null;
+        experienceFormData.current.role.value = null;
+        experienceFormData.current.description.value = null;
+        experienceFormData.current.startdate.value = null;
+        experienceFormData.current.enddate.value = null;
+        experienceFormData.current.location.value = null;
+
+        setShowExForm(false);
+    }
+    const allExFormHandling = () => {
+        handleAddExForm();
+        scrollCallback();
+    }
+    const inputExForm = useRef();
+    const scrollCallback = () => {
+        inputExForm.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     return(
@@ -91,19 +158,22 @@ function Resume() {
             </header>
                 <main className="resume-main">
                 <div id="experience-title">Experience</div>
-                <section className="submit-ex-container">
-                    <ExperienceData />
-                            <div className="input-ex">
-                                <form ref={experienceFormData} onSubmit={handleSubmitExperience}>Add experience
+                        <section className="submit-ex-container">
+                            {isClickable == false ? ExperienceData(false) : ExperienceData(true)}
+                    <div className="input-ex" ref={inputExForm}>
+                        {showExForm == false ? <button id="add-exform-btn" type="button" onClick={allExFormHandling}>Add Experience</button> : <button id="hide-exform-btn" type="button" onClick={handleAddExForm}>Cancel</button>}
+                        {showExForm == true ?
+                            <form ref={experienceFormData} onSubmit={handleSubmitExperience}>
                                 <input id="input-ex-company" name="company" type="text" placeholder="Company" />
-                                <input id="input-ex-role" name="role" type="text" placeholder="Role"/>
-                                <input id="input-ex-location" name="location" type="text" placeholder="Location"/>
-                                <input id="input-ex-description" name="description" type="text" placeholder="Description"/>
-                                <input id="input-ex-startdate" name="startdate" type="date" placeholder="start date"/>
-                                <input id="input-ex-enddate" name="enddate" type="date" placeholder="(estimated) end date"/>
-                                <button type="submit">Submit</button>
-                            </form>
+                                <input id="input-ex-role" name="role" type="text" placeholder="Role" />
+                                <input id="input-ex-location" name="location" type="text" placeholder="Location" />
+                                <textarea id="input-ex-description" name="description" type="text" placeholder="Description" />
+                                <input id="input-ex-startdate" name="startdate" type="date" placeholder="start date" />
+                                <input id="input-ex-enddate" name="enddate" type="date" placeholder="(estimated) end date" />
+                                <button id="submit-exform-btn" type="submit">Submit</button>
+                            </form> : null}
                             </div>
+                            {isClickable == false ? <button id="del-ex-btn" type="button" onClick={() => setIsClickable(true)}>Delete Experience</button> : <button id="cancel-del-ex-btn" type="button" onClick={() => setIsClickable(false)}>cancel</button>}
                 </section>
                 <div id="education-title">Education</div>
                 <section className="submit-ed-container">

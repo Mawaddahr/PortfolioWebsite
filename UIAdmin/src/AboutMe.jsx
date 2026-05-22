@@ -161,6 +161,7 @@ function AboutMe() {
                     <article>
                         <textarea
                             id="about-me-text"
+                            type="text"
                             value={aboutMeText}
                             onChange={(e) => setAboutMeText(e.target.value)}
                             maxLength={5000}
