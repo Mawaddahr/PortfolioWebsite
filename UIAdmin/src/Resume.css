@@ -202,7 +202,13 @@ input[type="text"]::placeholder, #input-ex-description::placeholder{
     color: lightpink;
 }
 
-#add-exform-btn, #hide-exform-btn, #submit-exform-btn, #del-ex-btn, #cancel-del-ex-btn {
+#add-exform-btn,
+#hide-exform-btn,
+#submit-exform-btn,
+#del-ex-btn,
+#cancel-del-ex-btn,
+#edit-ex-btn,
+#cancel-edit-ex-btn {
     height: fit-content;
     border: 5px solid #023020;
     border-radius: 20px;

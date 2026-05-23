@@ -28,8 +28,10 @@ query{
             id,
             company,
             role,
+            description,
             startDate,
-            endDate
+            endDate,
+            location
         }
     }
 }`;
@@ -63,40 +65,60 @@ function EducationData() {
         </>);
 }
 
-function ExperienceData(isButton) {
+function ExperienceData(deleteButtonClicked, editButtonClicked) {
     const { data } = useQuery(GET_EXPERIENCE);
     const experience = data?.experiences.nodes || [{ company: "you suck" }];
+    const [experienceToEdit, setExperienceToEdit] = useState();
     const [deleteExperience] = useMutation(DELETE_EXPERIENCE);
 
     async function handleDeleteEx(id) {
         if (window.confirm("Are you sure you want to delete this experience?")) {
-            await deleteExperience({
+            const { errors, data } = await deleteExperience({
                 variables: {
                     id: id
                 }
             });
+
+            alert(errors ? errors[0].message : data.deleteExperience);
         }
     }
     return (<>
         <div className="experience-list">
             {
-                experience.map((ex, i) => ( isButton == false ?
-                    <div className="experience-container" key={ex.id ?? i}>
-                        <div id="company">{ex.company}</div>
-                        <div id="role">{ex.role}</div>
-                        <div id="ex-endDate">{ex.startDate} - {ex.endDate}</div>
-                    </div> : <button className="experience-button" key={ex.id ?? i} onClick={async () => await handleDeleteEx(ex.id ?? i)}>
-                        <div id="company">{ex.company}</div>
-                        <div id="role">{ex.role}</div>
-                        <div id="ex-endDate">{ex.startDate} - {ex.endDate}</div>
-                    </button>))
-        }</div></>);
-}
+                experience.map((ex, i) =>
+                    !deleteButtonClicked && !editButtonClicked ? (
+                        <div className="experience-container" key={ex.id ?? i}>
+                            <div id="company">{ex.company}</div>
+                            <div id="role">{ex.role}</div>
+                            <div id="ex-endDate">
+                                {ex.startDate} - {ex.endDate}
+                            </div>
+                        </div>
+                    ) : (
+                        <button
+                                className="experience-button"
+                                key={ex.id ?? i}
+                                onClick={async () => {
+                                    if (deleteButtonClicked) {
+                                        await handleDeleteEx(ex.id ?? i)
+                                    }
+                                }}
+                        >
+                            <div id="company">{ex.company}</div>
+                            <div id="role">{ex.role}</div>
+                            <div id="ex-endDate">
+                                {ex.startDate} - {ex.endDate}
+                            </div>
+                        </button>
+                    )
+                )
+            }</div></>)}
 function Resume() {
     const educationFormData = useRef();
     const experienceFormData = useRef();
     const [showExForm, setShowExForm] = useState(false);
-    const [isClickable, setIsClickable] = useState(false);
+    const [hideDeleteExButton, setHideDeleteExButton] = useState(false);
+    const [hideEditExButton, setHideEditExButton] = useState(false)
     const [insertExperience] = useMutation(INSERT_EXPERIENCE);
 
     const handleAddExForm = () => {
@@ -159,7 +181,7 @@ function Resume() {
                 <main className="resume-main">
                 <div id="experience-title">Experience</div>
                         <section className="submit-ex-container">
-                            {isClickable == false ? ExperienceData(false) : ExperienceData(true)}
+                            {ExperienceData(hideDeleteExButton, hideEditExButton)}
                     <div className="input-ex" ref={inputExForm}>
                         {showExForm == false ? <button id="add-exform-btn" type="button" onClick={allExFormHandling}>Add Experience</button> : <button id="hide-exform-btn" type="button" onClick={handleAddExForm}>Cancel</button>}
                         {showExForm == true ?
@@ -173,7 +195,9 @@ function Resume() {
                                 <button id="submit-exform-btn" type="submit">Submit</button>
                             </form> : null}
                             </div>
-                            {isClickable == false ? <button id="del-ex-btn" type="button" onClick={() => setIsClickable(true)}>Delete Experience</button> : <button id="cancel-del-ex-btn" type="button" onClick={() => setIsClickable(false)}>cancel</button>}
+                            {hideDeleteExButton == false ? <button id="del-ex-btn" type="button" onClick={() => setHideDeleteExButton(true)}>Delete Experience</button> : <button id="cancel-del-ex-btn" type="button" onClick={() => setHideDeleteExButton(false)}>cancel</button>}
+                            {hideEditExButton == false ? <button id="edit-ex-btn" type="button" onClick={() => setHideEditExButton(true)}>Edit Experience</button> : <button id="cancel-edit-ex-btn" type="button" onClick={() => setHideEditExButton(false)}>cancel</button>}
+
                 </section>
                 <div id="education-title">Education</div>
                 <section className="submit-ed-container">
