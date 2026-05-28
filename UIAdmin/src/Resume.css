@@ -157,7 +157,7 @@ body,
     display: flex;
     flex-direction: row;
 }
-.input-ex, #add-ed, form{
+.input-ex, #add-ed, .edit-ex, form{
     font-size: 50px;
     font-family: Sloop;
     display: flex;
