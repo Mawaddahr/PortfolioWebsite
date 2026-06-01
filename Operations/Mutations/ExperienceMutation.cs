@@ -47,8 +47,8 @@ namespace PortfolioWebsite.Operations.Mutations
             {
                 await experienceValidator.ValidateAndThrowAsync(experience);
                 await experienceService.UpdateExperienceAsync(experience);
-                return "succesfully updated experience.";
-            }
+                return $"experience with id: {experience.Id} updated successfully!";
+        }
             catch (ValidationException e)
             {
                 throw new GraphQLException(

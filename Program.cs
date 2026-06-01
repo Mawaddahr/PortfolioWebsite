@@ -42,6 +42,10 @@ builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
 
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(o =>
+    {
+        o.IncludeExceptionDetails = true;
+    })
     .AddDataAnnotationsValidator()
     .AddQueryType(q => q.Name("Query"))
     .AddType<ExperienceQuery>()

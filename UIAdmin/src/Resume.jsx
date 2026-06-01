@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import './Resume.css';
@@ -76,6 +77,7 @@ function ExperienceData(deleteButtonClicked, editButtonClicked) {
     const experience = data?.experiences.nodes || [{ company: "you suck" }];
     const [deleteExperience] = useMutation(DELETE_EXPERIENCE);
     const [editExperience] = useMutation(UPDATE_EXPERIENCE);
+    const navigate = useNavigate();
 
     async function handleDeleteEx(id) {
         if (window.confirm("Are you sure you want to delete this experience?")) {
@@ -87,6 +89,10 @@ function ExperienceData(deleteButtonClicked, editButtonClicked) {
 
             alert(errors ? errors[0].message : data.deleteExperience);
         }
+    }
+
+    async function handleUpdateEx(id) {
+        navigate(`/update_experience/${id}`)
     }
     return (<>
         <div className="experience-list">
@@ -104,6 +110,7 @@ function ExperienceData(deleteButtonClicked, editButtonClicked) {
                         <button
                                 className="experience-button"
                                 key={ex.id ?? i}
+                                onClick={() => deleteButtonClicked ? handleDeleteEx(ex.id) : handleUpdateEx(ex.id)}
                             >
                                 <div id="company">{ex.company}</div>
                                 <div id="role">{ex.role}</div>

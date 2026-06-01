@@ -5,8 +5,8 @@ function App() {
     return (<>
         <div className="app">
         <div className='app-body'>
-        <header>
-            <nav className="nav-container">
+        <header className="app-header">
+            <nav className="app-nav-container">
                 <Link className="nav-btn" to="/AboutMe">About me</Link>
                 <Link className="nav-btn" to="/Resume">Resumé</Link>
                 <Link className="nav-btn" to="/Projects">Projects</Link>

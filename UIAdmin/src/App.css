@@ -13,20 +13,31 @@ html,
 body,
 #root {
     height: 100%;
+    width: 100%;
+    padding: 0;
     margin: 0;
 }
 .app {
     height: 100vh;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 0;
 }
 
 .app-body {
+    height: 100%;
     background-color: #ffffff;
     border-radius: 20px;
-    padding: 10px;
+    padding: 0;
 }
 
+.app-header
+{
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    padding: 0;
+}
 .nav-btn {
     border: none;
     cursor: pointer;
@@ -44,7 +55,9 @@ body,
     color: #FFE9EB;
 }
 
-.nav-container {
+.app-nav-container {
+    height: 10%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,11 +81,11 @@ body,
 }
 
 .homepage-main {
+    height: 85%;
     background-color: #023020;
     border-radius: 20px;
     border: 5px solid #FFE9EB;
     display: flex;
-    height: 100vh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
