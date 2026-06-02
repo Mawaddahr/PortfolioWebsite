@@ -87,7 +87,8 @@ const UpdateExperience = () =>
         experienceFormData.current.enddate.value = null;
         experienceFormData.current.location.value = null;
 
-        alert("yay updated successfully!")
+        alert("yay updated successfully!");
+        navigate(-1);
     }
     if (errors) return (<><h1>error! {errors.message}</h1></>)
     if (loading) return (<><h1>loading...</h1></>)

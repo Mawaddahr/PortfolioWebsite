@@ -35,6 +35,7 @@ body,
 }
 
 header {
+    height: fit-content;
     background-color: #ffffff;
     display: flex;
     flex-direction: row;
@@ -123,7 +124,7 @@ textarea
 #about-me-img
 {
     margin-right: 200px;
-    height: 500px;
+    height: 350px;
     border-radius: 20px;
     border: 5px solid #FFE9EB;
 }
