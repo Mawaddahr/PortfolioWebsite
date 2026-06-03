@@ -15,7 +15,9 @@ body,
     margin: 0;
     padding: 0;
 }
-
+.nav-container{
+    margin-bottom: 0;
+}
 .abt-me{
     background-color: #023020;
     height: 100vh;
