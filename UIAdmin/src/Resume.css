@@ -1,0 +1,269 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+html,
+body,
+#root {
+    height: 100vh;
+    margin: 0;
+}
+
+.resume {
+    background-color: #023020;
+    height: fit-content;
+    padding: 20px;
+}
+
+.resume-header
+{
+    background-color: inherit;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+}
+.resume-body {
+    height: fit-content;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 5px solid #FFE9EB;
+    padding: 10px;
+}
+
+.resume-main
+{
+    height: fit-content;
+}
+
+.experience-list, .education-list {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-content: flex-start;
+}
+
+.experience-list > * {
+    flex: 0 1 300px;
+}
+.education-list > * {
+    flex: 0 1 300px;
+}
+
+.experience-container, .education-container, .experience-button, .education-button
+{
+    border-radius: 20px;
+}
+
+.experience-container, .experience-button
+{
+    border: 5px solid #023020;
+    background-color: #FFE9EB;
+    padding: 20px;
+    width: fit-content;
+}
+
+.experience-button, .education-button
+{
+    animation: horizontal-shaking 0.4s infinite;
+}
+
+@keyframes horizontal-shaking {
+    0% {
+        transform: translateX(0)
+    }
+
+    25% {
+        transform: translateX(5px)
+    }
+
+    50% {
+        transform: translateX(-5px)
+    }
+
+    75% {
+        transform: translateX(5px)
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
+
+.experience-button:hover, .education-button:hover{
+    animation: horizontal-shaking 0.2s infinite;
+    cursor: pointer;
+}
+
+.education-container, .education-button {
+    border: 5px solid #FFE9EB;
+    background-color: #023020;
+    padding: 20px;
+    width: fit-content;
+}
+
+#role, #study-program
+{
+    font-size: 50px;
+}
+
+#company, #role, #ex-endDate, #ex-startDate
+{
+    font-family: Perandory;
+    color: #023020;
+}
+
+#institution, #study-program, #ed-endDate, #ed-startDate {
+    font-family: Perandory;
+    color: #FFE9EB;
+}
+
+#education-title, #experience-title {
+    font-family: Sloop;
+    color: #023020;
+    font-size: 50px;
+}
+
+#resume-title {
+    margin-top: 0;
+    font-family: Perandory;
+    color: #ffffff;
+    width: fit-content;
+}
+.resume-nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.resume-nav-btn:hover {
+    color: #FFE9EB;
+    cursor: pointer;
+}
+
+.resume-nav-container {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ex-container, .ed-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.submit-ed-container, .submit-ex-container
+{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    height: 50%;
+    width: fit-content;
+    left: 0;
+}
+
+.input-ex{
+    margin-right: 0;
+}
+.input-ex, #add-ed, .edit-ex, form{
+    font-size: 50px;
+    font-family: Sloop;
+    display: flex;
+    flex-direction: column;
+}
+
+label, #onGoing
+{
+    font-size: 30px;
+    font-family: Sloop;
+}
+
+input[type="date"]:not(.has-value):before{
+    color: darkgray;
+    content: attr(placeholder);
+}
+input[type="text"], input[type="date"], #input-ex-description
+{
+    min-height: fit-content;
+    min-width: fit-content;
+    padding: 10px;
+    color: lightpink;
+    font-family: Perandory;
+    font-size: 20px;
+    border-radius: 20px;
+    border: 2px solid #023020;
+    margin-bottom: 10px;
+}
+
+input[type="text"]::placeholder, #input-ex-description::placeholder{
+    text-align: center;
+}
+#input-ex-description
+{
+    height: 100px;
+}
+#onGoing {
+    color: lightpink;
+}
+
+#ongoing-title
+{
+    font-size: 30px;
+}
+
+#add-exform-btn,
+#hide-exform-btn,
+#submit-exform-btn,
+#submit-edform-btn,
+#del-ex-btn,
+#cancel-del-ex-btn,
+#edit-ex-btn,
+#cancel-edit-ex-btn,
+#del-ed-btn,
+#edit-ed-btn,
+#cancel-del-ed-btn,
+#cancel-edit-ed-btn,
+#hide-edform-btn{
+    height: fit-content;
+    width: fit-content;
+    border: 5px solid #023020;
+    border-radius: 20px;
+    font-size: 40px;
+    font-family: Perandory;
+    background-color: #FFE9EB;
+    padding: 20px;
+    margin: 10px;
+}
+
+    #add-exform-btn:hover,
+    #hide-exform-btn:hover,
+    #submit-exform-btn:hover,
+    #submit-edform-btn:hover,
+    #del-ex-btn:hover,
+    #cancel-del-ex-btn:hover,
+    #edit-ex-btn:hover,
+    #cancel-edit-ex-btn:hover,
+    #del-ed-btn:hover,
+    #edit-ed-btn:hover,
+    #cancel-del-ed-btn:hover,
+    #cancel-edit-ed-btn:hover,
+    #hide-edform-btn:hover {
+        cursor: pointer;
+    }

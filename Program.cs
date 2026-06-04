@@ -2,6 +2,7 @@ using Dapper.FluentMap;
 using DataAnnotatedModelValidations;
 using FluentValidation;
 using PortfolioWebsite.Database;
+using PortfolioWebsite.Endpoints;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Operations.Mutations;
@@ -41,6 +42,10 @@ builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
 
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(o =>
+    {
+        o.IncludeExceptionDetails = true;
+    })
     .AddDataAnnotationsValidator()
     .AddQueryType(q => q.Name("Query"))
     .AddType<ExperienceQuery>()
@@ -58,11 +63,14 @@ Microsoft.Extensions.DependencyInjection.ValidationServiceCollectionExtensions.A
     options => { }
 );
 
+//builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication();
+//builder.Services.AddAntiforgery();
 builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
                         {
-                            policy.WithOrigins("http://localhost:5173")
+                            policy.WithOrigins(["http://localhost:5173", "http://localhost:5174"])
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                         }));
@@ -77,15 +85,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 //app.UseHttpsRedirection();
-
+//app.UseAuthentication();
 //app.UseAuthorization();
 app.UseCors(AllowSpecificOrigins);
 app.MapGraphQL();
-
+//app.UseAntiforgery();
+app.UseStaticFiles();
+app.MapUploadEndpoints();
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MawaddaDbContext>();
     await context.Init();
 }
 
-app.Run();
+app.Run("http://localhost:5142");

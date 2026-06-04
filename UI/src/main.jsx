@@ -4,6 +4,7 @@ import { BrowserRouter, Router, Routes, Link, Route } from 'react-router-dom'
 import App from './App.jsx';
 import Projects from './Projects.jsx';
 import Resume from './Resume.jsx';
+
 import { ApolloClient, HttpLink, InMemoryCache} from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 

@@ -24,8 +24,8 @@ function App() {
 
     return (
       <>
-        <header>
-            <nav className="nav-container">
+        <header className="home-header">
+            <nav className="nav-container-home">
                     <button className="nav-btn" onClick={scrollToAbout}>About me</button>
                 <Link className="nav-btn" to="/Resume">Resumé</Link>
                 <Link className="nav-btn" to="/Projects">Projects</Link>
@@ -35,7 +35,7 @@ function App() {
                 <h1 id="website-title">Mawadda's</h1>
                 <h2 id="website-title2">development journey website</h2>
             </main>
-            <section ref={aboutRef}>
+            <section className="home-section" ref={aboutRef}>
                 <div className="tag-row">
                 <h2 id="about">About</h2>
                 <h2 id="about2">me</h2>

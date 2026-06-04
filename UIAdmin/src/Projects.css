@@ -21,8 +21,8 @@ html {
     scroll-behavior: smooth;
 }
 
-body{
-    background-color: #FFE9EB;
+body {
+    background-color: #023020;
     display: flex;
     justify-items: center;
     align-content: center;
@@ -47,10 +47,12 @@ body{
     justify-content: center;
     margin: 0;
 }
-#title, .sloop-script-h2{
+
+#title, .sloop-script-h2 {
     margin: 0;
 }
-#project-name{
+
+#project-name {
     font-family: Perandory;
     font-size: 50px;
     color: #023020;
@@ -58,8 +60,7 @@ body{
     justify-content: center;
 }
 
-#instruction-text
-{
+#instruction-text {
     font-family: Sloop;
     font-size: 40px;
     color: #023020;
@@ -80,9 +81,10 @@ body{
     text-decoration: none;
 }
 
-.nav-btn:hover {
-    color: #FFE9EB
-}
+    .nav-btn:hover {
+        color: #FFE9EB
+    }
+
 .nav-container {
     width: 100vw;
     display: flex;
@@ -111,8 +113,7 @@ body{
     align-items: center;
 }
 
-.left-arrow, .right-arrow
-{
+.left-arrow, .right-arrow {
     height: 300px;
     cursor: pointer;
 }
@@ -120,6 +121,7 @@ body{
 .left-arrow {
     float: left;
 }
+
 .right-arrow {
     float: right;
 }
