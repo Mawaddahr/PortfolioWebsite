@@ -20,6 +20,13 @@ body,
     padding: 20px;
 }
 
+.resume-header
+{
+    background-color: inherit;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+}
 .resume-body {
     height: fit-content;
     background-color: #ffffff;
@@ -126,13 +133,14 @@ body,
 #resume-title {
     margin-top: 0;
     font-family: Perandory;
-    color: #023020;
+    color: #ffffff;
+    width: fit-content;
 }
-.nav-btn {
+.resume-nav-btn {
     border: none;
     cursor: pointer;
     background-color: transparent;
-    color: #023020;
+    color: #ffffff;
     font-family: Perandory;
     font-size: 20px;
     margin: 20px;
@@ -140,19 +148,17 @@ body,
     text-decoration: none;
 }
 
-.nav-btn:hover {
+.resume-nav-btn:hover {
     color: #FFE9EB;
     cursor: pointer;
 }
 
-.nav-container {
-    margin-top: 0px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: auto;
+.resume-nav-container {
+    height: 10%;
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 
@@ -240,7 +246,7 @@ input[type="text"]::placeholder, #input-ex-description::placeholder{
     border: 5px solid #023020;
     border-radius: 20px;
     font-size: 40px;
-    font-family: Sloop;
+    font-family: Perandory;
     background-color: #FFE9EB;
     padding: 20px;
     margin: 10px;

@@ -31,11 +31,6 @@ mutation deleteEducation($id: String!){
     deleteEducation(id: $id)
   }`;
 
-const UPDATE_EDUCATION = gql`
-mutation updateEducation($education: EducationInput!){
-  updateEducation(education: $education)
-}`
-
 const GET_EXPERIENCE = gql`
 query{
     experiences(last: 3)
@@ -59,12 +54,6 @@ const INSERT_EXPERIENCE = gql`
             insertExperience(experience: $experience)
         }
     `;
-
-const UPDATE_EXPERIENCE = gql`
-        mutation updateExperience($experience: InputExperienceInput!){
-            updateExperience(experience: $experience)
-            }
-        `;
 
 const DELETE_EXPERIENCE = gql`mutation deleteExperience($id: String!)
   {
@@ -293,15 +282,15 @@ function Resume() {
     return(
         <>
         <div className="resume">
-        <div className="resume-body">
-            <header>
+            <header className="resume-header">
                 <h1 id="resume-title">Resume</h1>
-            <nav className="nav-container">
-                <Link className="nav-btn" to="/">Home</Link>
-                <Link className="nav-btn" to="/AboutMe">About me</Link>
-                <Link className="nav-btn" to="/Projects">Projects</Link>
-            </nav>
+                <nav className="resume-nav-container">
+                    <Link className="resume-nav-btn" to="/">Home</Link>
+                    <Link className="resume-nav-btn" to="/AboutMe">About me</Link>
+                    <Link className="resume-nav-btn" to="/Projects">Projects</Link>
+                </nav>
             </header>
+        <div className="resume-body">
                 <main className="resume-main">
                 <div id="experience-title">Experience</div>
                 <div className= "ex-container">

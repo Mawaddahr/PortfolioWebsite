@@ -38,11 +38,11 @@ body,
     justify-items: center;
     padding: 0;
 }
-.nav-btn {
+.app-nav-btn {
     border: none;
     cursor: pointer;
     background-color: transparent;
-    color: #ffffff;
+    color: #023020;
     font-family: Perandory;
     font-size: 20px;
     margin: 20px;
@@ -51,7 +51,7 @@ body,
     text-decoration: none;
 }
 
-.nav-btn:hover {
+.app-nav-btn:hover {
     color: #FFE9EB;
 }
 

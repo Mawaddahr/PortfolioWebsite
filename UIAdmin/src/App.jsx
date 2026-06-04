@@ -7,9 +7,9 @@ function App() {
         <div className='app-body'>
         <header className="app-header">
             <nav className="app-nav-container">
-                <Link className="nav-btn" to="/AboutMe">About me</Link>
-                <Link className="nav-btn" to="/Resume">Resumé</Link>
-                <Link className="nav-btn" to="/Projects">Projects</Link>
+                <Link className="app-nav-btn" to="/AboutMe">About me</Link>
+                <Link className="app-nav-btn" to="/Resume">Resumé</Link>
+                <Link className="app-nav-btn" to="/Projects">Projects</Link>
             </nav>
         </header>
         <main className="homepage-main">

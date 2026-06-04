@@ -1,0 +1,132 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #023020;
+    display: flex;
+    justify-items: center;
+    align-content: center;
+}
+
+.project-main {
+    background-color: #ffffff;
+    height: fit-content;
+    width: 90%;
+    border: solid #FFE9EB 5px;
+    border-radius: 20px;
+    margin: 60px;
+}
+
+.project-container {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    margin: 0;
+}
+
+#title, .sloop-script-h2 {
+    margin: 0;
+}
+
+#project-name {
+    font-family: Perandory;
+    font-size: 50px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
+#instruction-text {
+    font-family: Sloop;
+    font-size: 40px;
+    color: #023020;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 20px;
+    margin-right: 50px;
+    margin-top: 20px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+    .nav-btn:hover {
+        color: #FFE9EB
+    }
+
+.nav-container {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sloop-script-h2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 70px;
+}
+
+#title {
+    color: #023020;
+    font-family: Perandory;
+    font-size: 90px;
+}
+
+.slideshow-container {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-arrow, .right-arrow {
+    height: 300px;
+    cursor: pointer;
+}
+
+.left-arrow {
+    float: left;
+}
+
+.right-arrow {
+    float: right;
+}
+
+.slideshow-img {
+    height: 300px;
+    justify-content: center;
+}

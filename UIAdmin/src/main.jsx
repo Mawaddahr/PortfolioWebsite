@@ -8,7 +8,8 @@ import LogIn from './LogIn.jsx'
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-import UpdateExperience from './UpdateExperience.jsx'
+import UpdateExperience from './UpdateExperience.jsx';
+import UpdateEducation from './UpdateEducation.jsx';
 
 const client = new ApolloClient({
     link: new HttpLink({ uri: "http://localhost:5142/graphql/" }),
@@ -22,8 +23,9 @@ createRoot(document.getElementById('root')).render(
             <Route path="/LogIn" element={<LogIn />} />
             <Route path="/AboutMe" element={<ApolloProvider client={client}><AboutMe /></ApolloProvider>} />
             <Route path="/Resume" element={<ApolloProvider client= {client}><Resume/></ApolloProvider>}/>
-            <Route path="/Projects" element={<Projects />} />
+            <Route path="/Projects" element={<ApolloProvider client={client}><Projects /></ApolloProvider>} />
             <Route path="/update_experience/:id" element={<ApolloProvider client= {client} ><UpdateExperience/></ApolloProvider> }/>
+            <Route path="/update_education/:id" element={<ApolloProvider client={client} ><UpdateEducation /></ApolloProvider>} />
         </Routes>
     </BrowserRouter >
 )

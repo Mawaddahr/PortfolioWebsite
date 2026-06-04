@@ -119,18 +119,18 @@ function AboutMe() {
     return (
         <>
             <div className="abt-me">
+                <header className="abtme-header">
+                    <div className="about-container">
+                        <h2 id="about">About</h2>
+                        <h2 id="about2">me</h2>
+                    </div>
+                    <nav className="abtme-nav-container">
+                        <Link className="nav-btn" to="/">Home</Link>
+                        <Link className="nav-btn" to="/Resume">Resumé</Link>
+                        <Link className="nav-btn" to="/Projects">Projects</Link>
+                    </nav>
+                </header>
             <div className="abt-me-body">
-            <header>
-                <div className="about-container">
-                    <h2 id="about">About</h2>
-                    <h2 id="about2">me</h2>
-                </div>
-            <nav className="nav-container">
-                <Link className="nav-btn" to="/">Home</Link>
-                <Link className="nav-btn" to="/Resume">Resumé</Link>
-                <Link className="nav-btn" to="/Projects">Projects</Link>
-                </nav>
-            </header>
             <main className='abt-me-main'>
             <div className="buttons">
             <button id="show-text-btn" onClick={handleText}>{buttonText}</button>
