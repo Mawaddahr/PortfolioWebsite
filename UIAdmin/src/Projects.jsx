@@ -29,9 +29,31 @@ function DisplayProjects() {
 }
 
 function Projects() {
+    const [addButtonClicked, setAddButtonClicked] = useState(false)
+    const [editButtonClicked, setEditButtonClicked] = useState(false)
+    const [deleteButtonClicked, setDeleteButtonClicked] = useState(false)
     const { projects, loading, error } = DisplayProjects();
     const [index, setIndex] = useState(0);
     const arrayLength = projects.length;
+
+    const handleButtonsClicked = (add, edit, deleteB) => {
+        if (add) {
+            setAddButtonClicked(true);
+            setEditButtonClicked(false);
+            setDeleteButtonClicked(false);
+        }
+        else if (deleteB) {
+            setDeleteButtonClicked(true);
+            setAddButtonClicked(false);
+            setEditButtonClicked(false);
+        }
+
+        else if (edit) {
+            setEditButtonClicked(true);
+            setAddButtonClicked(false);
+            setDeleteButtonClicked(false);
+        }
+    }
 
     useEffect(() => {
         if (index >= arrayLength) {
@@ -65,16 +87,24 @@ function Projects() {
             <main className="project-main">
                 <div className="project-container">
                     <h2 className="sloop-script-h2">my</h2><h1 id="title">Projects</h1>
+                    <div className="edit-btns">
+                            {addButtonClicked == false ? <button id="add-project-btn" onClick={() => handleButtonsClicked(true, false, false)}>Add Project</button> :
+                                <button id="add-project-btn" onClick={() => setAddButtonClicked(false)}>Cancel</button>}
+                            {editButtonClicked == false ? <button id="edit-project-btn" onClick={() => handleButtonsClicked(false, true, false)}>Edit Project</button> :
+                                <button id="edit-project-btn" onClick={() => setEditButtonClicked(false)}>Cancel</button>}
+                            {deleteButtonClicked == false ? <button id="delete-project-btn" onClick={() => handleButtonsClicked(false, false, true)}>Delete Project</button> :
+                                <button id="delete-project-btn" onClick={() => setDeleteButtonClicked(false)}>Cancel</button> }
+                    </div>
                 </div>
                 <div className="slideshow-container">
                     <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
-                    <Link to={projects[index].link} target="_blank">
+                        <button id="slideshow-img-btn" onClick={() => alert("Are you sure you want to edit this project?")} target="_blank">
                         <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
-                    </Link>
+                    </button>
                     <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
                 </div>
                 <div id="project-name">{projects[index].name}</div>
-                <div id="instruction-text">Click on the image!</div>
+                <div id="instruction-text">Click to edit project!</div>
                 </main>
             </div>
         </>
