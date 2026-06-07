@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Projects.css";
 import leftArrow from "../img/l-arrow.png";
 import rightArrow from "../img/r-arrow.png";
@@ -12,6 +13,7 @@ const GET_PROJECTS = gql`
   {
     nodes
     {
+      id,
       name,
       description,
       link,
@@ -29,6 +31,7 @@ function DisplayProjects() {
 }
 
 function Projects() {
+    const navigate = useNavigate();
     const [addButtonClicked, setAddButtonClicked] = useState(false)
     const [editButtonClicked, setEditButtonClicked] = useState(false)
     const [deleteButtonClicked, setDeleteButtonClicked] = useState(false)
@@ -52,6 +55,21 @@ function Projects() {
             setEditButtonClicked(true);
             setAddButtonClicked(false);
             setDeleteButtonClicked(false);
+        }
+    }
+
+    const handleAddProject = () => {
+        navigate("add_project");
+
+    }
+
+    const handleEditProject = (id) => {
+        navigate(`edit_project/${id}`)
+    }
+
+    const handleDeleteProject = (id) => {
+        if (window.confirm("are you sure you want to delete this project?")) {
+            navigate(`delete_project/${id}`)
         }
     }
 
@@ -96,13 +114,30 @@ function Projects() {
                                 <button id="delete-project-btn" onClick={() => setDeleteButtonClicked(false)}>Cancel</button> }
                     </div>
                 </div>
-                <div className="slideshow-container">
-                    <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
+                    {editButtonClicked ?
+                        <div className="slideshow-container">
+                            <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
+                            <button id="slideshow-img-btn" onClick={() => handleEditProject(projects[index].id)} target="_blank">
+                                <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
+                            </button>
+                            <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
+                        </div> 
+                        : deleteButtonClicked ? 
+                            <div className="slideshow-container">
+                                <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
+                                <button id="slideshow-img-btn" onClick={() => handleDeleteProject(projects[index].id)} target="_blank">
+                                    <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
+                                </button>
+                                <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
+                            </div> 
+                        : addButtonClicked ? handleAddProject()
+                        : <div className="slideshow-container">
+                        <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
                         <button id="slideshow-img-btn" onClick={() => alert("Are you sure you want to edit this project?")} target="_blank">
-                        <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
-                    </button>
-                    <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
-                </div>
+                            <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
+                        </button>
+                        <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
+                    </div>}
                 <div id="project-name">{projects[index].name}</div>
                 <div id="instruction-text">Click to edit project!</div>
                 </main>
