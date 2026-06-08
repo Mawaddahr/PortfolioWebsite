@@ -1,0 +1,113 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+html,
+body,
+#root{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.add-project-body
+{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.add-project-header
+{
+    height: 10vh;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.add-project-main {
+    padding: 20px;
+    background-color: white;
+    border: 5px solid #FFE9EB;
+    border-radius: 20px;
+    height: 90%;
+    width: 90%;
+}
+
+.title-container
+{
+    display: flex;
+    flex-direction: row;
+}
+.sloop-script-h2 {
+    z-index: 999;
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 70px;
+}
+
+#title {
+    z-index: 998;
+    color: #023020;
+    font-family: Perandory;
+    font-size: 90px;
+}
+form {
+    margin-right: 0;
+    font-size: 50px;
+    font-family: Sloop;
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],  #project-description, #input-project-name {
+    min-height: fit-content;
+    min-width: fit-content;
+    padding: 10px;
+    color: lightpink;
+    font-family: Perandory;
+    font-size: 20px;
+    border-radius: 20px;
+    border: 2px solid #023020;
+    margin-bottom: 10px;
+}
+
+input[type="text"]::placeholder, #project-description::placeholder {
+    text-align: center;
+}
+
+#project-description {
+    height: 100px;
+}
+
+#submit-btn{
+    height: fit-content;
+    width: fit-content;
+    border: 5px solid #023020;
+    border-radius: 20px;
+    font-size: 40px;
+    font-family: Perandory;
+    background-color: #FFE9EB;
+    padding: 20px;
+    margin: 10px;
+}
+
+#submit-btn:hover
+{
+    cursor: pointer;
+}
+
+#back-btn
+{
+    background-color: transparent;
+    border: none;
+    font-family: Perandory;
+    font-size: 20px;
+    color: white;
+}

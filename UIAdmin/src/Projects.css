@@ -38,6 +38,7 @@ body {
 }
 
 .project-container {
+    position: relative;
     height: fit-content;
     width: 100%;
     display: flex;
@@ -129,4 +130,30 @@ body {
 .slideshow-img {
     height: 300px;
     justify-content: center;
+}
+
+#slideshow-img-btn
+{
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.edit-btns{
+    position: absolute;
+    right: 0;
+    margin: 10px;
+}
+
+#add-project-btn, #edit-project-btn, #delete-project-btn
+{
+    margin-right: 5px;
+    height: fit-content;
+    width: fit-content;
+    font-size: 20px;
+    border: 5px solid #023020;
+    border-radius: 20px;
+    padding: 10px;
+    font-family: Perandory;
+    background-color: #FFE9EB;
 }
