@@ -5,7 +5,7 @@ import "./Projects.css";
 import leftArrow from "../img/l-arrow.png";
 import rightArrow from "../img/r-arrow.png";
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
+import { useQuery, useMutation} from "@apollo/client/react";
 
 const GET_PROJECTS = gql`
 {
@@ -23,6 +23,10 @@ const GET_PROJECTS = gql`
 }
 `;
 
+const DELETE_PROJECT = gql`
+mutation deleteProject($id: String!) {
+  deleteProject(id: $id)
+}`;
 function DisplayProjects() {
     const { loading, error, data } = useQuery(GET_PROJECTS);
     const projects = data?.projects?.nodes || [];
@@ -31,6 +35,7 @@ function DisplayProjects() {
 }
 
 function Projects() {
+    const [deleteProject] = useMutation(DELETE_PROJECT)
     const navigate = useNavigate();
     const [addButtonClicked, setAddButtonClicked] = useState(false)
     const [editButtonClicked, setEditButtonClicked] = useState(false)
@@ -59,17 +64,24 @@ function Projects() {
     }
 
     const handleAddProject = () => {
-        navigate("add_project");
+        navigate("/add_project");
 
     }
 
     const handleEditProject = (id) => {
-        navigate(`edit_project/${id}`)
+        navigate(`/edit_project/${id}`)
     }
 
-    const handleDeleteProject = (id) => {
+    async function handleDeleteProject(id) {
         if (window.confirm("are you sure you want to delete this project?")) {
-            navigate(`delete_project/${id}`)
+            const result = await deleteProject({
+                variables: {
+                    id: id
+                }
+            });
+            if (result?.data?.deleteProject) {
+                alert("project deleted successfully!")
+            }
         }
     }
 
@@ -133,9 +145,7 @@ function Projects() {
                         : addButtonClicked ? handleAddProject()
                         : <div className="slideshow-container">
                         <img className="left-arrow" onClick={previousSlide} src={leftArrow} />
-                        <button id="slideshow-img-btn" onClick={() => alert("Are you sure you want to edit this project?")} target="_blank">
                             <img className="slideshow-img" src={projects[index].imageUrl} alt="project image" />
-                        </button>
                         <img className="right-arrow" onClick={nextSlide} src={rightArrow} />
                     </div>}
                 <div id="project-name">{projects[index].name}</div>

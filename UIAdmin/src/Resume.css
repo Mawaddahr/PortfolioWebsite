@@ -252,18 +252,18 @@ input[type="text"]::placeholder, #input-ex-description::placeholder{
     margin: 10px;
 }
 
-    #add-exform-btn:hover,
-    #hide-exform-btn:hover,
-    #submit-exform-btn:hover,
-    #submit-edform-btn:hover,
-    #del-ex-btn:hover,
-    #cancel-del-ex-btn:hover,
-    #edit-ex-btn:hover,
-    #cancel-edit-ex-btn:hover,
-    #del-ed-btn:hover,
-    #edit-ed-btn:hover,
-    #cancel-del-ed-btn:hover,
-    #cancel-edit-ed-btn:hover,
-    #hide-edform-btn:hover {
-        cursor: pointer;
-    }
+#add-exform-btn:hover,
+#hide-exform-btn:hover,
+#submit-exform-btn:hover,
+#submit-edform-btn:hover,
+#del-ex-btn:hover,
+#cancel-del-ex-btn:hover,
+#edit-ex-btn:hover,
+#cancel-edit-ex-btn:hover,
+#del-ed-btn:hover,
+#edit-ed-btn:hover,
+#cancel-del-ed-btn:hover,
+#cancel-edit-ed-btn:hover,
+#hide-edform-btn:hover {
+    cursor: pointer;
+}
