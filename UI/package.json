@@ -1,10 +1,10 @@
 {
-  "name": "my-react-app",
+  "name": "PortfolioWebsite",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5000",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
