@@ -3,7 +3,7 @@ import { auth, googleProvider } from './firebaseConfig.jsx';
 import { signInWithPopup } from 'firebase/auth'
 
 
-function LogInWithGoogle(initialValue) {
+function useLogInWithGoogle(initialValue) {
     const [isAuth, setIsAuth] = useState(initialValue)
     async function SignIn() {
         try {
@@ -18,4 +18,4 @@ function LogInWithGoogle(initialValue) {
     return [isAuth, SignIn]
 }
 
-export default LogInWithGoogle
+export default useLogInWithGoogle
