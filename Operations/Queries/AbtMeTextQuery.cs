@@ -1,5 +1,5 @@
-﻿using PortfolioWebsite.Services;
-using PortfolioWebsite.Objects;
+﻿using PortfolioWebsite.Objects;
+using PortfolioWebsite.Services;
 
 namespace PortfolioWebsite.Operations.Queries
 {
