@@ -4,28 +4,59 @@ services:
   postgres:
     image: postgres:latest
     container_name: mawaddadb-container
-    environment:
-     POSTGRES_DB: mawaddadb
-     POSTGRES_USER: mawadda
-     POSTGRES_PASSWORD: Ma19072006@
     ports:
       - "5432:5432"
     networks:
       - pg-network
     volumes:
       - pg-data:/var/lib/postgresql
+    env_file:
+      - ./.env
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: backend_pwebsite
+    ports:
+      - "5142:5142"
+    command: "dotnet run"
+    depends_on:
+      - postgres
+    env_file:
+      - ./.env
 
+  frontend:
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+    container_name: frontend_pwebsite
+    ports:
+      - "5000:5000"
+    command: "npm run dev"
+    env_file:
+      - ./.env
+      - ./UI/.env   
+
+  adminfrontend:
+    build:
+      context: ./UIAdmin
+      dockerfile: Dockerfile
+    container_name: frontend_admin_pwebsite
+    ports:
+      - "3000:3000"
+    command: "npm run dev"
+    env_file:
+      - ./.env
+      - ./UIAdmin/.env 
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pg-admin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: alkhorchanimawadda@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: Ma19072006@
     ports:
       - "8080:80"
     networks:
       - pg-network
-
+    env_file:
+      - ./.env
 networks:
   pg-network:
 

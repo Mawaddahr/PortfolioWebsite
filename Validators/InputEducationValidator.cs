@@ -1,8 +1,8 @@
-﻿using PortfolioWebsite.Objects.InputObjects;
-using FluentValidation;
+﻿using FluentValidation;
 using Dapper;
 using PortfolioWebsite.Database;
 using PortfolioWebsite.Objects;
+using PortfolioWebsite.Objects.InputObjects;
 
 namespace PortfolioWebsite.Validators
 {

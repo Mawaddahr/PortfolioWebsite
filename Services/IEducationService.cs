@@ -1,5 +1,4 @@
-﻿
-namespace PortfolioWebsite.Services
+﻿namespace PortfolioWebsite.Services
 {
     public interface IEducationService
     {

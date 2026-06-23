@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import './App.css'
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom'
+import Home from './Home.jsx'
 import Resume from './Resume.jsx'
 import AboutMe from './AboutMe.jsx'
 import Projects from './Projects.jsx'
@@ -21,28 +24,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-function Home({SignIn}) {
-    return (
-        <div className='app-body'>
-            <header className="app-header">
-                <nav className="app-nav-container">
-                    <button className="app-nav-btn" onClick={SignIn}>
-                        Sign in
-                    </button>
 
-                    <Link className="app-nav-btn" to="/AboutMe">About me</Link>
-                    <Link className="app-nav-btn" to="/Resume">Resumé</Link>
-                    <Link className="app-nav-btn" to="/Projects">Projects</Link>
-                </nav>
-            </header>
-
-            <main className="homepage-main">
-                <h1 id="website-title">Admin panel</h1>
-                <div id="website-title2">mawadda-alkhorchani.nl</div>
-            </main>
-        </div>
-    );
-}
 function App() {
     const [isAuth, SignIn] = useLogInWithGoogle(false);
     return(<>

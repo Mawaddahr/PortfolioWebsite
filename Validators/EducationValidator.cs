@@ -3,7 +3,6 @@ using FluentValidation;
 using PortfolioWebsite.Database;
 using PortfolioWebsite.Objects;
 
-
 namespace PortfolioWebsite.Validators
 {
     public class EducationValidator : AbstractValidator<Education>

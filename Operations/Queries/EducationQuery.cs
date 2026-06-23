@@ -2,7 +2,6 @@
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 
-
 namespace PortfolioWebsite.Operations.Queries
 {
     [ExtendObjectType("Query")]

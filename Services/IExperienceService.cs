@@ -1,5 +1,5 @@
-﻿using PortfolioWebsite.Objects;
-using PortfolioWebsite.Database;
+﻿using PortfolioWebsite.Database;
+using PortfolioWebsite.Objects;
 
 namespace PortfolioWebsite.Services
 {
