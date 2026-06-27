@@ -10,7 +10,7 @@ namespace PortfolioWebsite.Operations.Queries
         {
             try
             {
-                string path = @"C:\Users\User\source\repos\PortfolioWebsite\Database\AbtMeText.json";
+                string path = @"/app/Database/AbtMeText.json";
                 AboutMeText abtMeText = abtMeTextHandler.ReadFromJson(path);
                 return abtMeText;
             }

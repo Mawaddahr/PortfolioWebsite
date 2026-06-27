@@ -70,7 +70,7 @@ builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
                         {
-                            policy.WithOrigins(["http://localhost:3000", "http://localhost:5000"])
+                            policy.WithOrigins(["*"])
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                         }));
@@ -98,4 +98,4 @@ app.MapUploadEndpoints();
     await context.Init();
 }
 
-app.Run("http://localhost:5142");
+app.Run();

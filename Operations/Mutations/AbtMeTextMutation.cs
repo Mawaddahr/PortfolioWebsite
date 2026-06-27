@@ -10,7 +10,7 @@ namespace PortfolioWebsite.Operations.Mutations
         {
             try
             {
-                string path = @"C:\Users\User\source\repos\PortfolioWebsite\Database\AbtMeText.json";
+                string path = @"/app/Database/AbtMeText.json";
                 abtMeTextHandler.WriteToJson(abtMeText, path);
             }
             catch (Exception)

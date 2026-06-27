@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: mwd-portfolio-website-backend:latest
+    container_name: backend_pwebsite
+    ports:
+      - "8081:80"
+    command: "dotnet run"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - ./.env
   postgres:
     image: postgres:latest
     container_name: mawaddadb-container
@@ -12,23 +27,17 @@ services:
       - pg-data:/var/lib/postgresql
     env_file:
       - ./.env
-  backend:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: backend_pwebsite
-    ports:
-      - "5142:5142"
-    command: "dotnet run"
-    depends_on:
-      - postgres
-    env_file:
-      - ./.env
-
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
   frontend:
     build:
       context: ./UI
       dockerfile: Dockerfile
+    image: mwd-portfolio-website-ui
     container_name: frontend_pwebsite
     ports:
       - "5000:5000"
@@ -41,6 +50,7 @@ services:
     build:
       context: ./UIAdmin
       dockerfile: Dockerfile
+    image: mwd-portfolio-website-uiadmin
     container_name: frontend_admin_pwebsite
     ports:
       - "3000:3000"
