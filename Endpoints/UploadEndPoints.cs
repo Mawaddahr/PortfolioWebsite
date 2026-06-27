@@ -32,7 +32,7 @@ namespace PortfolioWebsite.Endpoints
                 await file.CopyToAsync(stream);
 
                 var imageUrl =
-                    $"{request.Scheme}://localhost:8081/imguploads/{fileName}";
+                    $"{request.Scheme}://{request.Host}/imguploads/{fileName}";
 
                 return Results.Ok(new
                 {
