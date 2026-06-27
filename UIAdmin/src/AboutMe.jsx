@@ -81,7 +81,7 @@ function AboutMe() {
         const formData = new FormData();
         formData.append("file", uploadedFile);
         const response = await fetch(
-            "http://localhost:5142/api/img-upload",
+            "http://localhost:8081/api/img-upload",
             {
                 method: "POST",
                 body: formData
