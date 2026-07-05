@@ -1,0 +1,101 @@
+﻿@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+html,
+body,
+#root{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.update-project{
+    height: 100%;
+    width: 100%;
+}
+.update-project-body{
+    background-color: #023020;
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.update-project-navigation
+{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.update-project-main {
+    background-color: white;
+    border: 5px solid #FFE9EB;
+    border-radius: 20px;
+    height: 90%;
+    width: 90%;
+}
+
+#update-project-title{
+    color: #023020;
+    font-family: Perandory;
+}
+
+#update-project-back-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    font-family: Perandory;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+#edit-ex, form{
+    height: 90%;
+    width: 40%;
+}
+
+#edit-ex-company,
+#edit-ex-role,
+#edit-ex-location,
+input[type="date"], #edit-ex-description {
+    min-height: fit-content;
+    min-width: fit-content;
+    padding: 10px;
+    color: lightpink;
+    font-family: Perandory;
+    font-size: 20px;
+    border-radius: 20px;
+    border: 2px solid #023020;
+    margin-bottom: 10px;
+}
+
+#edit-exform-btn {
+    height: fit-content;
+    border: 5px solid #023020;
+    border-radius: 20px;
+    font-size: 40px;
+    font-family: Sloop;
+    background-color: #FFE9EB;
+    padding: 20px;
+    margin: 10px;
+}
+
+#input-ex-description {
+    height: 100px;
+}

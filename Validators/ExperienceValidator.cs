@@ -26,7 +26,7 @@ namespace PortfolioWebsite.Validators
             var parms = new DynamicParameters();
             parms.Add("@Id", Id);
 
-            var sql = @"SELECT id FROM Experience
+            var sql = @"SELECT id FROM Experiences
                         WHERE id = @Id";
             var result = await conn.QueryFirstOrDefaultAsync<string>(sql, parms);
 

@@ -69,13 +69,13 @@ namespace PortfolioWebsite.Services
             parms.Add("@StartDate", experience.StartDate, System.Data.DbType.Date);
             parms.Add("@EndDate", experience.EndDate, System.Data.DbType.Date);
             parms.Add("@Id", experience.Id);
-            var sql = @"UPDATE Experiences
+            var sql = @"UPDATE experiences
                         SET company = @Company,
                             description = @Description,
                             role = @Role,
                             location = @Location,
                             startdate = @StartDate,
-                            enddate = @enddate
+                            enddate = @EndDate
                         WHERE id = @Id";
             await conn.ExecuteAsync(sql, parms);
         }

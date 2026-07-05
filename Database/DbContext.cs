@@ -64,6 +64,7 @@ namespace PortfolioWebsite.Database
             Map(e => e.Description).ToColumn("description");
             Map(e => e.StartDate).ToColumn("startdate");
             Map(e => e.EndDate).ToColumn("enddate");
+            Map(e => e.Location).ToColumn("location");
         }
 
     }

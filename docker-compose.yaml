@@ -1,31 +1,72 @@
 version: '3.8'
 
 services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: mwd-portfolio-website-backend:latest
+    container_name: backend_pwebsite
+    ports:
+      - "5142:80"
+    command: "dotnet run"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - ./.env
   postgres:
     image: postgres:latest
     container_name: mawaddadb-container
-    environment:
-     POSTGRES_DB: mawaddadb
-     POSTGRES_USER: mawadda
-     POSTGRES_PASSWORD: Ma19072006@
     ports:
       - "5432:5432"
     networks:
       - pg-network
     volumes:
       - pg-data:/var/lib/postgresql
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+  frontend:
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+    image: mwd-portfolio-website-ui
+    container_name: frontend_pwebsite
+    ports:
+      - "5000:5000"
+    command: "npm run dev"
+    env_file:
+      - ./.env
+      - ./UI/.env   
 
+  adminfrontend:
+    build:
+      context: ./UIAdmin
+      dockerfile: Dockerfile
+    image: mwd-portfolio-website-uiadmin
+    container_name: frontend_admin_pwebsite
+    ports:
+      - "3000:3000"
+    command: "npm run dev"
+    env_file:
+      - ./.env
+      - ./UIAdmin/.env 
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pg-admin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: alkhorchanimawadda@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: Ma19072006@
     ports:
       - "8080:80"
     networks:
       - pg-network
-
+    env_file:
+      - ./.env
 networks:
   pg-network:
 

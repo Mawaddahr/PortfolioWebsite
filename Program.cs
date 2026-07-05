@@ -2,6 +2,7 @@ using Dapper.FluentMap;
 using DataAnnotatedModelValidations;
 using FluentValidation;
 using PortfolioWebsite.Database;
+using PortfolioWebsite.Endpoints;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Operations.Mutations;
@@ -41,6 +42,10 @@ builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
 
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(o =>
+    {
+        o.IncludeExceptionDetails = true;
+    })
     .AddDataAnnotationsValidator()
     .AddQueryType(q => q.Name("Query"))
     .AddType<ExperienceQuery>()
@@ -58,14 +63,25 @@ Microsoft.Extensions.DependencyInjection.ValidationServiceCollectionExtensions.A
     options => { }
 );
 
+//builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication();
+//builder.Services.AddAntiforgery();
 builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
                         {
-                            policy.WithOrigins("http://localhost:5173")
+                            policy.WithOrigins(["http://localhost:5000", "http://localhost:3000"])
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                         }));
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(httpsOptions =>
+    {
+        httpsOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12 |
+                                   System.Security.Authentication.SslProtocols.Tls13;
+    });
+});
 
 FluentMapper.Initialize(config =>
 config.AddMap(new ExperienceMap()));
@@ -76,12 +92,27 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-//app.UseHttpsRedirection();
-
+app.UseHttpsRedirection();
+app.UseHsts();
+app.Use(async (context, next) =>
+{
+    if (!context.Request.IsHttps)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        await context.Response.WriteAsync("HTTPS required!");
+    }
+    else
+    {
+        await next(context);
+    }
+});
+//app.UseAuthentication();
 //app.UseAuthorization();
 app.UseCors(AllowSpecificOrigins);
 app.MapGraphQL();
-
+//app.UseAntiforgery();
+app.UseStaticFiles();
+app.MapUploadEndpoints();
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MawaddaDbContext>();

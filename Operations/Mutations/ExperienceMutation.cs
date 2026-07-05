@@ -1,8 +1,8 @@
-﻿using PortfolioWebsite.Objects;
-using PortfolioWebsite.Services;
-using PortfolioWebsite.Objects.InputObjects;
-using FluentValidation;
+﻿using FluentValidation;
 using PortfolioWebsite.Validators;
+using PortfolioWebsite.Objects;
+using PortfolioWebsite.Objects.InputObjects;
+using PortfolioWebsite.Services;
 
 namespace PortfolioWebsite.Operations.Mutations
 {
@@ -47,8 +47,8 @@ namespace PortfolioWebsite.Operations.Mutations
             {
                 await experienceValidator.ValidateAndThrowAsync(experience);
                 await experienceService.UpdateExperienceAsync(experience);
-                return "succesfully updated experience.";
-            }
+                return $"experience with id: {experience.Id} updated successfully!";
+        }
             catch (ValidationException e)
             {
                 throw new GraphQLException(

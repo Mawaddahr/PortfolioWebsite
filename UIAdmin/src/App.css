@@ -1,0 +1,94 @@
+
+@font-face {
+    font-family: 'Perandory';
+    src: url(PerandorySemiCondensed.otf);
+}
+
+@font-face {
+    font-family: 'Sloop';
+    src: url(Sloop-ScriptThree.ttf);
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.app {
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 0;
+}
+
+.app-body {
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 0;
+}
+
+.app-header
+{
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    padding: 0;
+}
+.app-nav-btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #023020;
+    font-family: Perandory;
+    font-size: 20px;
+    margin: 20px;
+    margin-right: 50px;
+    border-right: 1px solid #ffffff;
+    text-decoration: none;
+}
+
+.app-nav-btn:hover {
+    color: #FFE9EB;
+}
+
+.app-nav-container {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#website-title {
+    color: #ffffff;
+    font-family: Perandory;
+    font-size: 120px;
+    text-align: center;
+    margin: 0;
+    line-height: 85px;
+}
+
+#website-title2 {
+    color: #FFE9EB;
+    font-family: Sloop;
+    font-size: 80px;
+    line-height: 0px;
+    text-align: center;
+    margin: 0;
+}
+
+.homepage-main {
+    height: 85%;
+    background-color: #023020;
+    border-radius: 20px;
+    border: 5px solid #FFE9EB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+

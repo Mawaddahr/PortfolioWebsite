@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Properties\launchSettings.json" />
     <Content Include="UI\.vs\my-react-app.slnx\v18\DocumentLayout.backup.json" />
     <Content Include="UI\.vs\my-react-app.slnx\v18\DocumentLayout.json" />
     <Content Include="UI\.vs\VSWorkspaceState.json" />
@@ -4078,6 +4079,9 @@
     <None Include="UI\node_modules\zod\v4\mini\schemas.cjs" />
     <None Include="UI\node_modules\zod\v4\mini\schemas.d.cts" />
     <None Include="UI\node_modules\zod\v4\mini\schemas.js" />
+    <None Include="wwwroot\imguploads\0fde7fcd-4f4c-4f4b-81c6-ca4f7f506275.jpg" />
+    <None Include="wwwroot\imguploads\7dc37d6e-18c3-45b1-b0ae-9db551fdcb0e.jpeg" />
+    <None Include="wwwroot\imguploads\af115223-ace6-4680-be29-d78bfccb5519.jpeg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -4088,6 +4092,7 @@
     <PackageReference Include="Dapper.FluentMap.Dommel" Version="2.0.0" />
     <PackageReference Include="Dapper.SqlBuilder" Version="2.1.66" />
     <PackageReference Include="DataAnnotatedModelValidations" Version="10.0.0" />
+    <PackageReference Include="FirebaseAdminAuthentication.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
