@@ -20,7 +20,7 @@ import ProtectedRoute from './ProtectedRoutes.jsx'
 import useLogInWithGoogle from './Auth.jsx';
 
 const client = new ApolloClient({
-    link: new HttpLink({ uri: "http://localhost:8081/graphql/" }),
+    link: new HttpLink({ uri: "http://localhost:5142/graphql/" }),
     cache: new InMemoryCache(),
 });
 

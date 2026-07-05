@@ -8,7 +8,7 @@ services:
     image: mwd-portfolio-website-backend:latest
     container_name: backend_pwebsite
     ports:
-      - "8081:80"
+      - "5142:80"
     command: "dotnet run"
     depends_on:
       postgres:
@@ -28,7 +28,7 @@ services:
     env_file:
       - ./.env
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
       interval: 10s
       retries: 5
       start_period: 30s
