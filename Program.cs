@@ -70,10 +70,18 @@ builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
                         {
-                            policy.WithOrigins(["http://localhost:3000", "http://localhost:5000"])
+                            policy.WithOrigins(["http://localhost:5000", "http://localhost:3000"])
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                         }));
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(httpsOptions =>
+    {
+        httpsOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls12 |
+                                   System.Security.Authentication.SslProtocols.Tls13;
+    });
+});
 
 FluentMapper.Initialize(config =>
 config.AddMap(new ExperienceMap()));
@@ -84,7 +92,20 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+app.UseHsts();
+app.Use(async (context, next) =>
+{
+    if (!context.Request.IsHttps)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        await context.Response.WriteAsync("HTTPS required!");
+    }
+    else
+    {
+        await next(context);
+    }
+});
 //app.UseAuthentication();
 //app.UseAuthorization();
 app.UseCors(AllowSpecificOrigins);
@@ -98,4 +119,4 @@ app.MapUploadEndpoints();
     await context.Init();
 }
 
-app.Run("http://localhost:5142");
+app.Run();

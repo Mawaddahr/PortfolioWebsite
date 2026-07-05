@@ -1,16 +1,22 @@
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+WORKDIR /app
+EXPOSE 80
+
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-WORKDIR /PortfolioWebsite
-
-# Copy everything
-COPY *.csproj ./
-RUN dotnet restore
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["./PortfolioWebsite.csproj", "./"]
+RUN dotnet restore "./PortfolioWebsite.csproj"
 COPY . .
-RUN dotnet publish -o out
+WORKDIR "/src"
+RUN dotnet build "PortfolioWebsite.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Build and publish a release
+FROM build AS publish 
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "PortfolioWebsite.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
-WORKDIR /PortfolioWebsite
-COPY --from=build /PortfolioWebsite/out .
-ENTRYPOINT ["dotnet", "./PortfolioWebsite"]
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+ENTRYPOINT ["dotnet", "PortfolioWebsite.dll", "--environment=Development"]
