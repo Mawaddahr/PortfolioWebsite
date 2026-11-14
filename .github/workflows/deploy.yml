@@ -3,7 +3,7 @@ name: Deploy naar Azure
 # Draait bij elke push naar master, of handmatig via het tabblad Actions.
 on:
   push:
-    branches: [master]
+    branches: [master, main]
   workflow_dispatch:
 
 concurrency:
@@ -13,7 +13,7 @@ concurrency:
 env:
   RESOURCE_GROUP: rg-mawadda
   DOMAIN: mawadda.nl
-  IMAGE_REPO: ghcr.io/mawaddahr/portfoliowebsite-api
+  IMAGE_NAME: portfoliowebsite-api
   CONTAINER_ENV: cae-mawadda
 
 jobs:
@@ -25,6 +25,7 @@ jobs:
       packages: write
     outputs:
       image: ${{ steps.meta.outputs.image }}
+      repo: ${{ steps.meta.outputs.repo }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,7 +38,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - id: meta
-        run: echo "image=${IMAGE_REPO}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+        run: |
+          # GHCR-namen moeten kleine letters zijn
+          repo=$(echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')
+          echo "repo=${repo}" >> "$GITHUB_OUTPUT"
+          echo "image=${repo}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/build-push-action@v6
         with:
@@ -46,7 +51,7 @@ jobs:
           provenance: false
           tags: |
             ${{ steps.meta.outputs.image }}
-            ${{ env.IMAGE_REPO }}:latest
+            ${{ steps.meta.outputs.repo }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
@@ -87,7 +92,7 @@ jobs:
 
       - name: Controleer of de API-image publiek is
         env:
-          IMAGE: ${{ needs.api-image.outputs.image }}
+          IMAGE_REPO: ${{ needs.api-image.outputs.repo }}
         run: |
           path="${IMAGE_REPO#ghcr.io/}"
           token=$(curl -s "https://ghcr.io/token?scope=repository:${path}:pull" | jq -r '.token // empty')
@@ -96,7 +101,7 @@ jobs:
             -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json, application/vnd.docker.distribution.manifest.list.v2+json" \
             "https://ghcr.io/v2/${path}/manifests/${GITHUB_SHA}")
           if [ "$status" != "200" ]; then
-            echo "::error::De API-image is nog privé, dus Azure kan hem niet ophalen. Ga naar https://github.com/users/Mawaddahr/packages/container/portfoliowebsite-api/settings, kies 'Change visibility' → Public, en klik daarna hier op 'Re-run failed jobs'."
+            echo "::error::De API-image is nog privé, dus Azure kan hem niet ophalen. Ga naar https://github.com/users/${GITHUB_REPOSITORY_OWNER}/packages/container/${IMAGE_NAME}/settings (of: je GitHub-profiel → Packages → ${IMAGE_NAME} → Package settings), kies 'Change visibility' → Public, en klik daarna hier op 'Re-run failed jobs'."
             exit 1
           fi
 

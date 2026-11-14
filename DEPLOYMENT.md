@@ -14,7 +14,7 @@ Alle infrastructuur staat in [`infra/main.bicep`](infra/main.bicep).
 
 ## Workflows
 
-- **Deploy naar Azure** (`.github/workflows/deploy.yml`): draait bij elke push naar `master`. Bouwt de API-image (GitHub Container Registry), rolt de infrastructuur uit en zet beide frontends online. Het overzicht van de run bevat de tijdelijke adressen en de DNS-records.
+- **Deploy naar Azure** (`.github/workflows/deploy.yml`): draait bij elke push naar `master` of `main`. Bouwt de API-image (GitHub Container Registry), rolt de infrastructuur uit en zet beide frontends online. Het overzicht van de run bevat de tijdelijke adressen en de DNS-records.
 - **Domeinen koppelen** (`.github/workflows/custom-domains.yml`): handmatig starten nadat de DNS-records staan.
 - **Build-controle** (`.github/workflows/ci.yml`): controleert bij elke pull request of alles nog bouwt.
 
@@ -33,7 +33,7 @@ Onder *Settings → Secrets and variables → Actions*:
 
 ## Eerste keer
 
-1. Merge naar `master`. De eerste run stopt met de melding dat de API-image privé is: zet het package `portfoliowebsite-api` op **Public** (link staat in de foutmelding) en klik op *Re-run failed jobs*.
+1. Merge naar de hoofdbranch (`master` of `main`). De eerste run stopt met de melding dat de API-image privé is: zet het package `portfoliowebsite-api` op **Public** (link staat in de foutmelding) en klik op *Re-run failed jobs*.
 2. Zet de DNS-records uit het overzicht van de run bij je DNS-provider.
 3. Voeg in Firebase (*Authentication → Settings → Authorized domains*) het tijdelijke admin-adres en `admin.mawadda.nl` toe.
 4. Start **Domeinen koppelen**, en daarna nog één keer **Deploy naar Azure**.
