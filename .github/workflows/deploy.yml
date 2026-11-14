@@ -1,0 +1,233 @@
+name: Deploy naar Azure
+
+# Draait bij elke push naar master, of handmatig via het tabblad Actions.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-azure
+  cancel-in-progress: false
+
+env:
+  RESOURCE_GROUP: rg-mawadda
+  DOMAIN: mawadda.nl
+  IMAGE_REPO: ghcr.io/mawaddahr/portfoliowebsite-api
+  CONTAINER_ENV: cae-mawadda
+
+jobs:
+  api-image:
+    name: API-image bouwen
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        run: echo "image=${IMAGE_REPO}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          provenance: false
+          tags: |
+            ${{ steps.meta.outputs.image }}
+            ${{ env.IMAGE_REPO }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+  deploy:
+    name: Azure bijwerken
+    needs: api-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      id-token: write # nodig voor inloggen bij Azure zonder wachtwoord (OIDC)
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Controleer instellingen
+        env:
+          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          PG_PASSWORD: ${{ secrets.POSTGRES_ADMIN_PASSWORD }}
+          ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS }}
+        run: |
+          missing=""
+          [ -z "$CLIENT_ID" ] && missing="$missing AZURE_CLIENT_ID(secret)"
+          [ -z "$TENANT_ID" ] && missing="$missing AZURE_TENANT_ID(secret)"
+          [ -z "$SUBSCRIPTION_ID" ] && missing="$missing AZURE_SUBSCRIPTION_ID(secret)"
+          [ -z "$PG_PASSWORD" ] && missing="$missing POSTGRES_ADMIN_PASSWORD(secret)"
+          [ -z "$ADMIN_EMAILS" ] && missing="$missing ADMIN_EMAILS(variable)"
+          if [ -n "$missing" ]; then
+            echo "::error::Ontbrekende instellingen onder Settings → Secrets and variables → Actions:$missing"
+            exit 1
+          fi
+          case "$PG_PASSWORD" in
+            *";"*|*"'"*|*'"'*)
+              echo "::error::POSTGRES_ADMIN_PASSWORD mag geen ; of aanhalingstekens bevatten."
+              exit 1;;
+          esac
+
+      - name: Controleer of de API-image publiek is
+        env:
+          IMAGE: ${{ needs.api-image.outputs.image }}
+        run: |
+          path="${IMAGE_REPO#ghcr.io/}"
+          token=$(curl -s "https://ghcr.io/token?scope=repository:${path}:pull" | jq -r '.token // empty')
+          status=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer ${token}" \
+            -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json, application/vnd.docker.distribution.manifest.list.v2+json" \
+            "https://ghcr.io/v2/${path}/manifests/${GITHUB_SHA}")
+          if [ "$status" != "200" ]; then
+            echo "::error::De API-image is nog privé, dus Azure kan hem niet ophalen. Ga naar https://github.com/users/Mawaddahr/packages/container/portfoliowebsite-api/settings, kies 'Change visibility' → Public, en klik daarna hier op 'Re-run failed jobs'."
+            exit 1
+          fi
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Bestaande domeinkoppeling van de API opzoeken
+        id: domain
+        run: |
+          az extension add --name containerapp --upgrade --only-show-errors -y >/dev/null
+          cert_id=$(az containerapp env certificate list -g "$RESOURCE_GROUP" -n "$CONTAINER_ENV" \
+            --managed-certificates-only \
+            --query "[?properties.subjectName=='api.${DOMAIN}'].id | [0]" -o tsv 2>/dev/null || true)
+          echo "cert_id=${cert_id}" >> "$GITHUB_OUTPUT"
+          if [ -n "$cert_id" ]; then echo "api.${DOMAIN} is gekoppeld; die blijft behouden."; fi
+
+      - name: Infrastructuur uitrollen (Bicep)
+        id: infra
+        env:
+          IMAGE: ${{ needs.api-image.outputs.image }}
+          PG_PASSWORD: ${{ secrets.POSTGRES_ADMIN_PASSWORD }}
+          ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS }}
+          PG_LOCATION: ${{ vars.POSTGRES_LOCATION || 'westeurope' }}
+          CERT_ID: ${{ steps.domain.outputs.cert_id }}
+        run: |
+          custom_domain=""
+          if [ -n "$CERT_ID" ]; then custom_domain="api.${DOMAIN}"; fi
+
+          az deployment group create \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "deploy-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
+            --template-file infra/main.bicep \
+            --parameters \
+              apiImage="$IMAGE" \
+              postgresAdminPassword="$PG_PASSWORD" \
+              adminEmails="$ADMIN_EMAILS" \
+              postgresLocation="$PG_LOCATION" \
+              apiCustomDomain="$custom_domain" \
+              apiCertificateId="$CERT_ID" \
+            --query properties.outputs -o json > outputs.json
+
+          for key in apiUrl apiFqdn apiName customDomainVerificationId uiSiteName uiHostname adminSiteName adminHostname; do
+            echo "${key}=$(jq -r ".${key}.value" outputs.json)" >> "$GITHUB_OUTPUT"
+          done
+
+          if [ -n "$CERT_ID" ]; then
+            echo "api_url=https://api.${DOMAIN}" >> "$GITHUB_OUTPUT"
+          else
+            echo "api_url=$(jq -r '.apiUrl.value' outputs.json)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            UI/package-lock.json
+            UIAdmin/package-lock.json
+
+      - name: Frontends bouwen
+        env:
+          VITE_API_URL: ${{ steps.infra.outputs.api_url }}
+        run: |
+          echo "API-adres in de frontends: $VITE_API_URL"
+          npm ci --prefix UI --no-audit --no-fund
+          npm run build --prefix UI
+          npm ci --prefix UIAdmin --no-audit --no-fund
+          npm run build --prefix UIAdmin
+
+      - name: Deploy-tokens van de Static Web Apps ophalen
+        env:
+          UI_SITE: ${{ steps.infra.outputs.uiSiteName }}
+          ADMIN_SITE: ${{ steps.infra.outputs.adminSiteName }}
+        run: |
+          ui_token=$(az staticwebapp secrets list -n "$UI_SITE" -g "$RESOURCE_GROUP" --query properties.apiKey -o tsv)
+          admin_token=$(az staticwebapp secrets list -n "$ADMIN_SITE" -g "$RESOURCE_GROUP" --query properties.apiKey -o tsv)
+          echo "::add-mask::$ui_token"
+          echo "::add-mask::$admin_token"
+          echo "UI_SWA_TOKEN=$ui_token" >> "$GITHUB_ENV"
+          echo "ADMIN_SWA_TOKEN=$admin_token" >> "$GITHUB_ENV"
+
+      - name: Publieke site uitrollen
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ env.UI_SWA_TOKEN }}
+          action: upload
+          app_location: UI/dist
+          skip_app_build: true
+          skip_api_build: true
+
+      - name: Admin-site uitrollen
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ env.ADMIN_SWA_TOKEN }}
+          action: upload
+          app_location: UIAdmin/dist
+          skip_app_build: true
+          skip_api_build: true
+
+      - name: Overzicht en DNS-records
+        env:
+          UI_HOST: ${{ steps.infra.outputs.uiHostname }}
+          ADMIN_HOST: ${{ steps.infra.outputs.adminHostname }}
+          API_FQDN: ${{ steps.infra.outputs.apiFqdn }}
+          VERIFY_ID: ${{ steps.infra.outputs.customDomainVerificationId }}
+          API_URL: ${{ steps.infra.outputs.api_url }}
+        run: |
+          {
+            echo "## Site staat online"
+            echo ""
+            echo "| Onderdeel | Tijdelijk Azure-adres |"
+            echo "|---|---|"
+            echo "| Publieke site | https://${UI_HOST} |"
+            echo "| Admin-site | https://${ADMIN_HOST} |"
+            echo "| API (gebruikt door de frontends) | ${API_URL} |"
+            echo ""
+            echo "## DNS-records voor ${DOMAIN}"
+            echo ""
+            echo "Zet deze records bij je DNS-provider en start daarna de workflow **Domeinen koppelen**."
+            echo ""
+            echo "| Naam | Type | Waarde |"
+            echo "|---|---|---|"
+            echo "| www | CNAME | ${UI_HOST} |"
+            echo "| admin | CNAME | ${ADMIN_HOST} |"
+            echo "| api | CNAME | ${API_FQDN} |"
+            echo "| asuid.api | TXT | ${VERIFY_ID} |"
+            echo ""
+            echo "Voor het hoofddomein (${DOMAIN} zelf): stel bij je provider een doorverwijzing in naar https://www.${DOMAIN}, of gebruik de optie *include_apex* in de workflow **Domeinen koppelen** als je provider ALIAS-records ondersteunt."
+            echo ""
+            echo "Vergeet niet in de Firebase-console (Authentication → Settings → Authorized domains) toe te voegen: \`${ADMIN_HOST}\` en \`admin.${DOMAIN}\`."
+          } >> "$GITHUB_STEP_SUMMARY"

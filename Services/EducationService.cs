@@ -16,7 +16,7 @@ namespace PortfolioWebsite.Services
 
         public async Task<List<Education>> GetAllEducationAsync()
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var sql = @"SELECT * FROM Education";
             var EducationQuery = await conn.QueryAsync<Education>(sql);
             List<Education> educationList = [.. EducationQuery];
@@ -25,7 +25,7 @@ namespace PortfolioWebsite.Services
 
         public async Task<Education> GetEducationByIdAsync(string Id)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Id", Id);
             var sql = @"SELECT * FROM Education WHERE id = @Id";
@@ -35,7 +35,7 @@ namespace PortfolioWebsite.Services
 
         public async Task InsertEducationAsync(InputEducation educationInput)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             Education education = new Education(
                 educationInput.Institution,
                 educationInput.StudyProgram,
@@ -61,7 +61,7 @@ namespace PortfolioWebsite.Services
 
         public async Task UpdateEducationAsync(Education education)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
 
             var parms = new DynamicParameters();
 
@@ -87,7 +87,7 @@ namespace PortfolioWebsite.Services
 
         public async Task DeleteEducationAsync(string Id)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
 
             var parms = new DynamicParameters();
             parms.Add("@Id", Id);

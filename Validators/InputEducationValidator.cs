@@ -42,7 +42,7 @@ namespace PortfolioWebsite.Validators
                         and ongoing = @OnGoing
                         and enddate = @EndDate";
 
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var query = await conn.QueryAsync<Education?>(sql, parms);
             var result = query.FirstOrDefault();
             

@@ -26,7 +26,7 @@ namespace PortfolioWebsite.Validators
 
         private static async Task<bool> DoesntExistInDB(InputExperience experience, CancellationToken token)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
 
             parms.Add("@Company", experience.Company);

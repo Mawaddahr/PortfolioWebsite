@@ -1,0 +1,34 @@
+name: Build-controle
+
+# Controleert bij elke pull request of backend, frontends en Bicep nog bouwen.
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet build PortfolioWebsite.csproj -c Release
+
+  frontends:
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_URL: https://api.example.invalid
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --prefix UI --no-audit --no-fund && npm run build --prefix UI
+      - run: npm ci --prefix UIAdmin --no-audit --no-fund && npm run build --prefix UIAdmin
+
+  infra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: az bicep build --file infra/main.bicep --stdout > /dev/null

@@ -1,0 +1,112 @@
+name: Domeinen koppelen
+
+# Handmatig starten (tabblad Actions → Domeinen koppelen → Run workflow),
+# nadat de DNS-records uit het deploy-overzicht bij je DNS-provider staan.
+on:
+  workflow_dispatch:
+    inputs:
+      include_apex:
+        description: "Ook mawadda.nl zelf koppelen (alleen als je DNS-provider ALIAS/ANAME ondersteunt)"
+        type: boolean
+        default: false
+
+env:
+  RESOURCE_GROUP: rg-mawadda
+  DOMAIN: mawadda.nl
+  UI_SITE: swa-mawadda-ui
+  ADMIN_SITE: swa-mawadda-admin
+  API_APP: ca-mawadda-api
+  CONTAINER_ENV: cae-mawadda
+
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Controleer DNS-records
+        run: |
+          ok=true
+          check() {
+            local name="$1" type="$2"
+            local value
+            value=$(dig +short "$name" "$type" @1.1.1.1 | head -1)
+            if [ -z "$value" ]; then
+              echo "::error::Geen $type-record gevonden voor $name"
+              ok=false
+            else
+              echo "$name ($type) → $value"
+            fi
+          }
+          check "www.${DOMAIN}" CNAME
+          check "admin.${DOMAIN}" CNAME
+          check "api.${DOMAIN}" CNAME
+          check "asuid.api.${DOMAIN}" TXT
+          if [ "$ok" != "true" ]; then
+            echo "::error::Zet eerst de DNS-records uit het deploy-overzicht. DNS-wijzigingen kunnen tot een uur duren."
+            exit 1
+          fi
+
+      - name: www.mawadda.nl koppelen aan de publieke site
+        run: az staticwebapp hostname set -n "$UI_SITE" -g "$RESOURCE_GROUP" --hostname "www.${DOMAIN}"
+
+      - name: admin.mawadda.nl koppelen aan de admin-site
+        run: az staticwebapp hostname set -n "$ADMIN_SITE" -g "$RESOURCE_GROUP" --hostname "admin.${DOMAIN}"
+
+      - name: api.mawadda.nl koppelen aan de API (met gratis certificaat)
+        run: |
+          az extension add --name containerapp --upgrade --only-show-errors -y >/dev/null
+          existing=$(az containerapp hostname list -n "$API_APP" -g "$RESOURCE_GROUP" \
+            --query "[?name=='api.${DOMAIN}' && bindingType=='SniEnabled'] | length(@)" -o tsv)
+          if [ "$existing" = "1" ]; then
+            echo "api.${DOMAIN} is al gekoppeld."
+          else
+            az containerapp hostname add -n "$API_APP" -g "$RESOURCE_GROUP" --hostname "api.${DOMAIN}"
+            az containerapp hostname bind -n "$API_APP" -g "$RESOURCE_GROUP" --hostname "api.${DOMAIN}" \
+              --environment "$CONTAINER_ENV" --validation-method CNAME
+          fi
+
+      - name: Hoofddomein voorbereiden (optioneel)
+        if: ${{ inputs.include_apex }}
+        run: |
+          az staticwebapp hostname set -n "$UI_SITE" -g "$RESOURCE_GROUP" --hostname "$DOMAIN" \
+            --validation-method dns-txt-token --no-wait
+          token=""
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            token=$(az staticwebapp hostname show -n "$UI_SITE" -g "$RESOURCE_GROUP" --hostname "$DOMAIN" \
+              --query validationToken -o tsv 2>/dev/null || true)
+            [ -n "$token" ] && break
+            sleep 20
+          done
+          {
+            echo "## Hoofddomein ${DOMAIN}"
+            echo ""
+            echo "Zet bij je DNS-provider:"
+            echo ""
+            echo "| Naam | Type | Waarde |"
+            echo "|---|---|---|"
+            echo "| @ | TXT | ${token:-nog niet beschikbaar, draai deze workflow over een paar minuten opnieuw} |"
+            echo "| @ | ALIAS / ANAME | $(az staticwebapp show -n "$UI_SITE" -g "$RESOURCE_GROUP" --query defaultHostname -o tsv) |"
+            echo ""
+            echo "Azure valideert het TXT-record vanzelf en regelt daarna het certificaat."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Klaar
+        run: |
+          {
+            echo "## Gekoppeld"
+            echo ""
+            echo "- https://www.${DOMAIN}"
+            echo "- https://admin.${DOMAIN}"
+            echo "- https://api.${DOMAIN}"
+            echo ""
+            echo "Start nu de workflow **Deploy naar Azure** nog één keer (Run workflow), zodat de frontends https://api.${DOMAIN} gaan gebruiken."
+          } >> "$GITHUB_STEP_SUMMARY"

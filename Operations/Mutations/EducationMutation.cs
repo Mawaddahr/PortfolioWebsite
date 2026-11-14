@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using PortfolioWebsite.Auth;
+using FluentValidation;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Services;
@@ -11,6 +12,7 @@ namespace PortfolioWebsite.Operations.Mutations
     {
         // insert, update, delete
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> InsertEducationAsync(InputEducation inputEducation,
             [Service("educationService")] EducationService educationService,
             [Service("inputEducationValidator")] IValidator<InputEducation> educationValidator)
@@ -40,6 +42,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> UpdateEducationAsync(Education education,
             [Service("educationService")] EducationService educationService,
             [Service("educationValidator")] IValidator<Education> educationValidator)
@@ -69,6 +72,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> DeleteEducationAsync(string Id,
             [Service("educationService")] EducationService educationService,
             [Service("idValidator")] IValidator<(string id, string table)> idValidator)

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using PortfolioWebsite.Auth;
+using FluentValidation;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
 using PortfolioWebsite.Services;
@@ -10,6 +11,7 @@ namespace PortfolioWebsite.Operations.Mutations
     [ExtendObjectType("Mutation")]
     public class ProjectMutation
     {
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> InsertProjectAsync(InputProject inputProject,
             [Service("projectService")] ProjectService projectService,
             [Service("inputProjectValidator")] IValidator<InputProject> inputProjectValidator)
@@ -39,6 +41,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> UpdateProjectAsync(Project project,
             [Service("projectService")] ProjectService projectService,
             [Service("projectValidator")] IValidator<Project> projectValidator)
@@ -68,6 +71,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> DeleteProjectAsync(string Id,
             [Service("projectService")] ProjectService projectService,
             [Service("idValidator")] IValidator<(string id, string table)> idValidator)

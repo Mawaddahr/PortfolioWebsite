@@ -12,9 +12,40 @@ namespace PortfolioWebsite.Database
         {
             ConnectionFactory = connectionFactory;
         }
-        public async Task Init()
+        public async Task Init(string? aboutMeSeedPath = null, string? publicApiUrl = null)
         {
             await InitTables();
+            await SeedAboutMe(aboutMeSeedPath, publicApiUrl);
+        }
+
+        /// <summary>
+        /// Vult de AboutMe-tabel eenmalig met de tekst uit Database/AbtMeText.json,
+        /// zodat de site op een lege database niet leeg begint.
+        /// </summary>
+        private async Task SeedAboutMe(string? seedPath, string? publicApiUrl)
+        {
+            using var connection = await ConnectionFactory.CreateConnection();
+            var count = await connection.ExecuteScalarAsync<long>("SELECT COUNT(*) FROM AboutMe");
+            if (count > 0 || seedPath is null)
+            {
+                return;
+            }
+
+            var seed = PortfolioWebsite.Services.AbtMeTextHandler.ReadSeedFromJson(seedPath);
+            if (seed is null)
+            {
+                return;
+            }
+
+            var imageUrl = seed.ImageUrl ?? string.Empty;
+            if (!string.IsNullOrWhiteSpace(publicApiUrl))
+            {
+                imageUrl = imageUrl.Replace("http://localhost:5142", publicApiUrl.TrimEnd('/'));
+            }
+
+            await connection.ExecuteAsync(
+                "INSERT INTO AboutMe (id, text, imageurl) VALUES (1, @Text, @ImageUrl) ON CONFLICT (id) DO NOTHING",
+                new { seed.Text, ImageUrl = imageUrl });
         }
 
         private async Task InitTables()
@@ -47,9 +78,15 @@ namespace PortfolioWebsite.Database
                 link TEXT,
                 imageurl TEXT
             );
+
+            CREATE TABLE IF NOT EXISTS AboutMe(
+                id INT PRIMARY KEY,
+                text TEXT NOT NULL,
+                imageurl TEXT
+            );
             ";
 
-            var connection = await ConnectionFactory.CreateConnection();
+            using var connection = await ConnectionFactory.CreateConnection();
             await connection.ExecuteAsync(createTables);
         }
     }

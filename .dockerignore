@@ -28,3 +28,8 @@ README.md
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+# Niet nodig voor de backend-image
+UI/
+UIAdmin/
+infra/
+.github/

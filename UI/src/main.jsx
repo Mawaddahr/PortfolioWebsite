@@ -8,8 +8,11 @@ import Resume from './Resume.jsx';
 import { ApolloClient, HttpLink, InMemoryCache} from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 
+// Bij het bouwen in GitHub Actions wordt VITE_API_URL ingevuld; lokaal poort 5142.
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5142").replace(/\/$/, "");
+
 const client = new ApolloClient({
-    link: new HttpLink({ uri: "http://localhost:5142/graphql/" }),
+    link: new HttpLink({ uri: `${API_URL}/graphql/` }),
   cache: new InMemoryCache(),
 });
 
