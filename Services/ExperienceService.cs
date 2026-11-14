@@ -17,7 +17,7 @@ namespace PortfolioWebsite.Services
         // add pagination later on
         public async Task<List<Experience>?> GetAllExperienceAsync()
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var sql = "SELECT * FROM Experiences";
             var query = await conn.QueryAsync<Experience>(sql);
             var experiences = query.ToList();
@@ -26,7 +26,7 @@ namespace PortfolioWebsite.Services
 
         public async Task<Experience> GetExperienceByIdAsync(string Id)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parameters = new { ID = Id };
             var sql = "SELECT * FROM Experiences WHERE id = @ID";
             Experience experience = await conn.QueryFirstAsync<Experience>(sql, parameters);
@@ -35,7 +35,7 @@ namespace PortfolioWebsite.Services
 
         public async Task InsertExperienceAsync(InputExperience inputexperience)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             Experience experience = new Experience(
                 inputexperience.Company,
@@ -60,7 +60,7 @@ namespace PortfolioWebsite.Services
 
         public async Task UpdateExperienceAsync(Experience experience)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Company", experience.Company);
             parms.Add("@Description", experience.Description);
@@ -83,7 +83,7 @@ namespace PortfolioWebsite.Services
         public async Task DeleteExperienceByIdAsync(string Id)
         {
             Experience experience = await GetExperienceByIdAsync(Id);
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Id", experience.Id);
             var sql = @"DELETE FROM Experiences WHERE id = @Id";

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using PortfolioWebsite.Auth;
+using FluentValidation;
 using PortfolioWebsite.Validators;
 using PortfolioWebsite.Objects;
 using PortfolioWebsite.Objects.InputObjects;
@@ -10,6 +11,7 @@ namespace PortfolioWebsite.Operations.Mutations
     public class ExperienceMutation
     {
         [UseResolverScope]
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> InsertExperienceAsync(InputExperience experience,
             [Service("experienceService")] ExperienceService experienceService,
             [Service("inputExperienceValidator")] IValidator<InputExperience> experienceValidator)
@@ -39,6 +41,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> UpdateExperienceAsync(Experience experience,
             [Service("experienceService")] ExperienceService experienceService,
             [Service("experienceValidator")] IValidator<Experience> experienceValidator)
@@ -68,6 +71,7 @@ namespace PortfolioWebsite.Operations.Mutations
             }
         }
 
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
         public async Task<string> DeleteExperienceAsync(string id,
             [Service("experienceService")] ExperienceService experienceService,
             [Service("idValidator")] IValidator<(string id, string table)> idValidator)

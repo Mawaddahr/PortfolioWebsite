@@ -10,8 +10,10 @@ import AboutMe from './AboutMe.jsx'
 import Projects from './Projects.jsx'
 import LogIn from './LogIn.jsx'
 
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
+import { SetContextLink } from "@apollo/client/link/context";
+import { API_URL, getAuthHeaders } from './api.js';
 import UpdateExperience from './UpdateExperience.jsx';
 import UpdateEducation from './UpdateEducation.jsx';
 import AddProject from './AddProject.jsx'
@@ -19,8 +21,16 @@ import UpdateProject from './UpdateProject.jsx'
 import ProtectedRoute from './ProtectedRoutes.jsx'
 import useLogInWithGoogle from './Auth.jsx';
 
+// Stuurt bij elke GraphQL-request de Firebase-token van de ingelogde admin mee
+const authLink = new SetContextLink(async (prevContext) => ({
+    headers: {
+        ...prevContext.headers,
+        ...(await getAuthHeaders()),
+    },
+}));
+
 const client = new ApolloClient({
-    link: new HttpLink({ uri: "http://localhost:5142/graphql/" }),
+    link: ApolloLink.from([authLink, new HttpLink({ uri: `${API_URL}/graphql/` })]),
     cache: new InMemoryCache(),
 });
 

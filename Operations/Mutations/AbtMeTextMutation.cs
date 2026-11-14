@@ -1,4 +1,5 @@
-﻿using PortfolioWebsite.Objects;
+﻿using PortfolioWebsite.Auth;
+using PortfolioWebsite.Objects;
 using PortfolioWebsite.Services;
 
 namespace PortfolioWebsite.Operations.Mutations
@@ -6,12 +7,12 @@ namespace PortfolioWebsite.Operations.Mutations
     [ExtendObjectType("Mutation")]
     public class AbtMeTextMutation
     {
-        public string PutTextInJson(AboutMeText abtMeText, [Service("abtMeTextHandler")] AbtMeTextHandler abtMeTextHandler)
+        [HotChocolate.Authorization.Authorize(AdminAuth.Policy)]
+        public async Task<string> PutTextInJson(AboutMeText abtMeText, [Service("abtMeTextHandler")] AbtMeTextHandler abtMeTextHandler)
         {
             try
             {
-                string path = @"/app/Database/AbtMeText.json";
-                abtMeTextHandler.WriteToJson(abtMeText, path);
+                await abtMeTextHandler.WriteAsync(abtMeText);
             }
             catch (Exception)
             {

@@ -5,6 +5,7 @@ import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import DefaultImage from './assets/uploadImage.jpg';
 import './AboutMe.css';
+import { API_URL, getAuthHeaders } from './api.js';
 
 const GETABTMETEXT = gql`query{
   readAbtMeText
@@ -81,12 +82,17 @@ function AboutMe() {
         const formData = new FormData();
         formData.append("file", uploadedFile);
         const response = await fetch(
-            "http://localhost:5142/api/img-upload",
+            `${API_URL}/api/img-upload`,
             {
                 method: "POST",
+                headers: await getAuthHeaders(),
                 body: formData
             }
         );
+        if (!response.ok) {
+            alert("Uploaden mislukt. Ben je ingelogd met een admin-account?");
+            return;
+        }
 
         const data = await response.json();
         setAbtMeImg(data.imageUrl);

@@ -16,7 +16,7 @@ namespace PortfolioWebsite.Services
         }
         public async Task<List<Project>> GetAllProjectsAsync()
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
 
             var sql = @"SELECT * FROM Projects";
 
@@ -27,7 +27,7 @@ namespace PortfolioWebsite.Services
 
         public async Task<Project>? GetProjectByIdAsync(string Id)
         {
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             var parms = new DynamicParameters();
             parms.Add("@Id", Id);
             var sql = @"SELECT * FROM Projects WHERE id = @Id";
@@ -54,7 +54,7 @@ namespace PortfolioWebsite.Services
             var sql = @"INSERT INTO Projects (id, name, description, link, imageurl)
                         VALUES (@Id, @Name, @Description, @Link, @ImageUrl)";
 
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             await conn.ExecuteAsync(sql, parms);
         }
 
@@ -73,7 +73,7 @@ namespace PortfolioWebsite.Services
                             link = @Link,
                             imageurl = @ImageUrl
                         WHERE id = @Id";
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             await conn.ExecuteAsync(sql, parms);
         }
 
@@ -84,7 +84,7 @@ namespace PortfolioWebsite.Services
 
             var sql = @"DELETE FROM Projects WHERE id = @Id";
 
-            var conn = await _context.ConnectionFactory.CreateConnection();
+            using var conn = await _context.ConnectionFactory.CreateConnection();
             await conn.ExecuteAsync(sql, parms);
         }
     }

@@ -1,6 +1,8 @@
 using Dapper.FluentMap;
 using DataAnnotatedModelValidations;
 using FluentValidation;
+using HotChocolate.AspNetCore;
+using PortfolioWebsite.Auth;
 using PortfolioWebsite.Database;
 using PortfolioWebsite.Endpoints;
 using PortfolioWebsite.Objects;
@@ -12,6 +14,13 @@ using PortfolioWebsite.Validators;
 
 var AllowSpecificOrigins = "_allowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
+// Toegestane frontends. In Azure via Cors__AllowedOrigins__0, __1, ... ingesteld.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+if (allowedOrigins is null || allowedOrigins.Length == 0)
+{
+    allowedOrigins = ["http://localhost:5000", "http://localhost:3000"];
+}
 
 builder.Services.AddOpenApi();
 builder.Services.AddTransient<MawaddaDbContext>(_
@@ -42,9 +51,10 @@ builder.Services.AddKeyedScoped<AbtMeTextHandler>("abtMeTextHandler");
 
 builder.Services
     .AddGraphQLServer()
+    .AddAuthorization()
     .ModifyRequestOptions(o =>
     {
-        o.IncludeExceptionDetails = true;
+        o.IncludeExceptionDetails = builder.Environment.IsDevelopment();
     })
     .AddDataAnnotationsValidator()
     .AddQueryType(q => q.Name("Query"))
@@ -63,14 +73,14 @@ Microsoft.Extensions.DependencyInjection.ValidationServiceCollectionExtensions.A
     options => { }
 );
 
-//builder.Services.AddAuthorization();
-//builder.Services.AddAuthentication();
-//builder.Services.AddAntiforgery();
+// Alleen ingelogde admins (Firebase-token + e-mailadres uit Auth:AdminEmails) mogen wijzigen.
+builder.Services.AddFirebaseAdminAuth(builder.Configuration, builder.Environment);
+
 builder.Services.AddCors(options =>
 options.AddPolicy(name: AllowSpecificOrigins,
                         policy =>
                         {
-                            policy.WithOrigins(["http://localhost:5000", "http://localhost:3000"])
+                            policy.WithOrigins(allowedOrigins)
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                         }));
@@ -88,35 +98,36 @@ config.AddMap(new ExperienceMap()));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Achter Azure Container Apps wordt HTTPS aan de voorkant afgehandeld. Met
+// ASPNETCORE_FORWARDEDHEADERS_ENABLED=true leest de app de X-Forwarded-*-headers,
+// zodat Request.Scheme gewoon "https" is. Een eigen HTTPS-check is daardoor niet nodig.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-app.UseHttpsRedirection();
-app.UseHsts();
-app.Use(async (context, next) =>
+else
 {
-    if (!context.Request.IsHttps)
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        await context.Response.WriteAsync("HTTPS required!");
-    }
-    else
-    {
-        await next(context);
-    }
-});
-//app.UseAuthentication();
-//app.UseAuthorization();
+    app.UseHsts();
+}
+
 app.UseCors(AllowSpecificOrigins);
-app.MapGraphQL();
-//app.UseAntiforgery();
 app.UseStaticFiles();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapGraphQL().WithOptions(new GraphQLServerOptions
+{
+    // De GraphQL-IDE (Nitro) alleen lokaal tonen
+    Tool = { Enable = app.Environment.IsDevelopment() },
+});
 app.MapUploadEndpoints();
+
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MawaddaDbContext>();
-    await context.Init();
+    await context.Init(
+        System.IO.Path.Combine(AppContext.BaseDirectory, "Database", "AbtMeText.json"),
+        builder.Configuration["PublicApiUrl"]);
 }
 
 app.Run();

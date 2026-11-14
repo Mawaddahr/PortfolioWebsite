@@ -8,8 +8,9 @@ services:
     image: mwd-portfolio-website-backend:latest
     container_name: backend_pwebsite
     ports:
-      - "5142:80"
-    command: "dotnet run"
+      - "5142:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
         condition: service_healthy
